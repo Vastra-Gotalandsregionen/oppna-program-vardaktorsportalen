@@ -47,41 +47,16 @@
 				                </h3>
 				            </div>
 				            <div class="bd description">
-				            	<%-- 
-			                    <c:choose>
-			                        <c:when test="${fn:length(document.description) <= maxLengthDescription }">
-			                            <c:out value="${document.description}" escapeXml="false"/>
-			                        </c:when>
-			                        <c:otherwise>
-			                            <c:out value="${fn:substring(document.description, 0, maxLengthDescription)}" escapeXml="false"/>...
-			                        </c:otherwise>
-			                    </c:choose>
-			                    --%>
 				            </div>
 				            <div class="ft">
-				                <c:choose>
-				                    <c:when test="${not empty document.revisiondateAsDateObject}">
-				                        Publiceringsdatum:&nbsp;
-				                        <span class="date"><fmt:formatDate value="${document.revisiondateAsDateObject}" pattern="yyyy-MM-dd"/></span>&nbsp;
-				                    </c:when>
-				                </c:choose>
-				
-								<%-- 
-				                <portlet:actionURL var="documentUrl">
-				                    <portlet:param name="action" value="interceptDocumentSourceClick"/>
-				                    <portlet:param name="targetUrl" value="${document.url}"/>
-				                    <portlet:param name="documentId" value="${document.id}"/>
-				                </portlet:actionURL>
-				
-				                <c:choose>
-				                    <c:when test="${not empty document.source}">
-				                        <span class="source">${document.source}: <a href="${documentUrl}" target="_BLANK">G&aring; till k&auml;lla</a></span>&nbsp;
-				                    </c:when>
-				                    <c:otherwise>
-				                        <span class="source">K&auml;lla: <a href="${documentUrl}" target="_BLANK">G&aring; till k&auml;lla</a></span>&nbsp;
-				                    </c:otherwise>
-				                </c:choose>
-				                --%>
+								<c:choose>
+									<c:when test="${document.source eq 'Dokumentlager'}">
+										<span class="source"><span class="label">G&auml;ller f&ouml;r:</span> V&auml;stra G&ouml;talandsregionen</span>&nbsp;
+									</c:when>
+									<c:otherwise>
+										<span class="source"><spanc class="label">Källa: </span>${document.source}</span>&nbsp;
+									</c:otherwise>
+								</c:choose>
 				            </div>
 				        </li>
 				    </c:forEach>
