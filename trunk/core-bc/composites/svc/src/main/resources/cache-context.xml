@@ -15,7 +15,7 @@
 
   <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager" p:cacheManager-ref="ehcache"/>
 
-  <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+  <!--<bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean">
     <property name="locateExistingServerIfPossible" value="true"/>
   </bean>
 
@@ -26,6 +26,6 @@
     <constructor-arg value="true"/>
     <constructor-arg value="true"/>
     <constructor-arg value="true"/>
-  </bean>
+  </bean>-->
 
 </beans>

@@ -12,6 +12,8 @@ import javax.portlet.RenderRequest;
 import java.util.Collection;
 
 /**
+ * Bookmark controller class.
+ *
  * @author Patrik Bergström
  */
 @Controller
@@ -20,11 +22,22 @@ public class BookmarkController extends BaseController {
 
     private FolderService folderService;
 
+    /**
+     * Constructor.
+     *
+     * @param folderService the folderService
+     */
     @Autowired
     public BookmarkController(FolderService folderService) {
         this.folderService = folderService;
     }
 
+    /**
+     * Loads the {@link Folder}s of the requesting user and returns the folders view.
+     *
+     * @param request the request
+     * @return the view
+     */
     @RenderMapping
     public String showSearch(RenderRequest request) {
         Collection<Folder> folders = folderService.findByUserId(getUser(request).getUserId());

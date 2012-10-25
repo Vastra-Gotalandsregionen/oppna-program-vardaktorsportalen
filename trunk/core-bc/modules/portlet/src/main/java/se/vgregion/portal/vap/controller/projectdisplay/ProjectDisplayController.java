@@ -28,9 +28,8 @@ public class ProjectDisplayController extends BaseController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectDisplayController.class);
 
-    @Autowired
-    public ProjectDisplayController(UserEventsService userEventsService) {
-        super.userEventsService = userEventsService;
+    public ProjectDisplayController() {
+
     }
 
     @RenderMapping
@@ -52,10 +51,6 @@ public class ProjectDisplayController extends BaseController {
     	
     	if(article != null) {
     		request.setAttribute("article", article);
-    		System.out.println("ProjectDisplayController - showProjectNavigation - article is NOT null");
-    	}
-    	else {
-    		System.out.println("ProjectDisplayController - showProjectNavigation - article IS null");
     	}
     	
         return "project-display";

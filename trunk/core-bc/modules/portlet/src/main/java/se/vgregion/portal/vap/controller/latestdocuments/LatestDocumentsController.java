@@ -31,7 +31,7 @@ public class LatestDocumentsController extends BaseController {
 
     @Autowired
     public LatestDocumentsController(UserEventsService userEventsService) {
-        super.userEventsService = userEventsService;
+        setUserEventsService(userEventsService);
     }
 
     @RenderMapping
@@ -43,7 +43,7 @@ public class LatestDocumentsController extends BaseController {
         if (isLoggedIn(user)) {
             List<Document> documents = null;
             try {
-                documents = userEventsService.findRecentDocuments(user.getUserId());
+                documents = getUserEventsService().findRecentDocuments(user.getUserId());
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute("errorMessage", "Det gick inte att hämta senaste dokument på grund av tekniskt fel.");
