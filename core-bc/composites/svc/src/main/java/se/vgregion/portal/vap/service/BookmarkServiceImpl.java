@@ -11,6 +11,9 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Implementation of {@link BookmarkService}. It uses underlying repositories ({@link BookmarkRepository} and
+ * {@link FolderRepository}) to store and fetch the entities.
+ *
  * @author Patrik Bergström
  */
 public class BookmarkServiceImpl implements BookmarkService {
@@ -18,6 +21,12 @@ public class BookmarkServiceImpl implements BookmarkService {
     private BookmarkRepository bookmarkRepository;
     private FolderRepository folderRepository;
 
+    /**
+     * Constructor.
+     *
+     * @param bookmarkRepository bookmarkRepository
+     * @param folderRepository folderRepository
+     */
     @Autowired
     public BookmarkServiceImpl(BookmarkRepository bookmarkRepository, FolderRepository folderRepository) {
         this.bookmarkRepository = bookmarkRepository;

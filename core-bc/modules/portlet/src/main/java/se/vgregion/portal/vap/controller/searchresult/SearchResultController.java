@@ -41,10 +41,10 @@ public class SearchResultController extends BaseController {
                                   FlagService flagService,
                                   BookmarkService bookmarkService,
                                   UserEventsService userEventsService) {
-        super.documentSearchService = documentSearchService;
-        super.flagService = flagService;
-        super.bookmarkService = bookmarkService;
-        super.userEventsService = userEventsService;
+        setDocumentSearchService(documentSearchService);
+        setFlagService(flagService);
+        setBookmarkService(bookmarkService);
+        setUserEventsService(userEventsService);
     }
 
     @RenderMapping()
@@ -94,7 +94,7 @@ public class SearchResultController extends BaseController {
             requestUri.setParameter("offset", offset + "");
             requestUri.setParameter("hits", deltaSize + "");
 
-            searchResult = documentSearchService.search(requestUri.toString());
+            searchResult = getDocumentSearchService().search(requestUri.toString());
 
             request.setAttribute("searchResult", searchResult);
             request.setAttribute("searchQuery", URLEncoder.encode(requestUri.toString(), "UTF-8"));
@@ -168,7 +168,7 @@ public class SearchResultController extends BaseController {
         String documentId = request.getParameter("documentId");
         String folderName = request.getParameter("folderName");
 
-        bookmarkService.addBookmark(user.getUserId(), documentId, folderName);
+        getBookmarkService().addBookmark(user.getUserId(), documentId, folderName);
     }
 
     @ResourceMapping("toggleFlag")
@@ -177,7 +177,7 @@ public class SearchResultController extends BaseController {
 
         String documentId = request.getParameter("documentId");
 
-        flagService.toggleFlag(user.getUserId(), documentId);
+        getFlagService().toggleFlag(user.getUserId(), documentId);
     }
 
     private SizeOffsetAndPageComponentOffset handlePaginatorParameters(PortletRequest request) {
@@ -186,7 +186,7 @@ public class SearchResultController extends BaseController {
 
     private void populateRequestWithBookmarks(PortletRequest request, User user) {
         // todo the bookmarks may be better to load by a common portlet and set via public render parameter json serialized
-        Collection<Bookmark> bookmarks = bookmarkService.findBookmarksByUserId(user.getUserId());
+        Collection<Bookmark> bookmarks = getBookmarkService().findBookmarksByUserId(user.getUserId());
 
         // Map documentId to bookmark
         Map<String, Bookmark> documentIdBookmark = new HashMap<String, Bookmark>();

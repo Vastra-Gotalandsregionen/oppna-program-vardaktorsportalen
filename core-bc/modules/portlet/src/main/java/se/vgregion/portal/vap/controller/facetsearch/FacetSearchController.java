@@ -31,7 +31,7 @@ public class FacetSearchController extends BaseController {
 
     @Autowired
     public FacetSearchController(DocumentSearchService documentSearchService) {
-        super.documentSearchService = documentSearchService;
+        setDocumentSearchService(documentSearchService);
     }
 
     @RenderMapping
@@ -67,7 +67,7 @@ public class FacetSearchController extends BaseController {
             response.setRenderParameter("isPaginatorCall", "false");
             request.setAttribute("searchTerm", request.getParameter("searchTerm"));
             try {
-                String result = documentSearchService.searchJsonReply(searchQuery);
+                String result = getDocumentSearchService().searchJsonReply(searchQuery);
                 response.setEvent(new QName("http://liferay.com/events", "vap.searchResultJson"), result);
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);

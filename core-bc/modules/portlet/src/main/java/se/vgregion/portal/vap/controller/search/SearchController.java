@@ -57,7 +57,7 @@ public class SearchController extends BaseController {
 
     @Autowired
     public SearchController(DocumentSearchService documentSearchService) {
-        super.documentSearchService = documentSearchService;
+        setDocumentSearchService(documentSearchService);
     }
 
     @RenderMapping
@@ -119,7 +119,7 @@ public class SearchController extends BaseController {
 
             response.setRenderParameter("isPaginatorCall", "false");
             try {
-                String result = documentSearchService.searchJsonReply(searchQuery);
+                String result = getDocumentSearchService().searchJsonReply(searchQuery);
                 response.setEvent(new QName("http://liferay.com/events", "vap.searchResultJson"), result);
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);
@@ -131,7 +131,7 @@ public class SearchController extends BaseController {
     public void autoSuggest(ResourceRequest request, ResourceResponse response) throws IOException {
     	String searchTerm = request.getParameter("autoCompleteSearchTerm");
     	
-    	Collection<String> suggestions = documentSearchService.getAutoSuggestions(searchTerm.toLowerCase());
+    	Collection<String> suggestions = getDocumentSearchService().getAutoSuggestions(searchTerm.toLowerCase());
     	
         ObjectMapper mapper = new ObjectMapper();
 

@@ -3,14 +3,15 @@ package se.vgregion.portal.vap.domain.jpa;
 import se.vgregion.dao.domain.patterns.entity.AbstractEntity;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
+ * JPA entity.
+ *
  * @author Patrik Bergström
  */
 @Entity
 @Table(name = "vgr_vap_bookmark",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"folder_id", "documentid"}))
+        uniqueConstraints = @UniqueConstraint(columnNames = {"folder_id", "documentid" }))
 public class Bookmark extends AbstractEntity<Long> {
 
     @Id
@@ -24,9 +25,17 @@ public class Bookmark extends AbstractEntity<Long> {
 
     private String documentTitle;
 
+    /**
+     * Constructor.
+     */
     public Bookmark() {
     }
 
+    /**
+     * Constructor.
+     * @param folder folder
+     * @param documentId documentId
+     */
     public Bookmark(Folder folder, String documentId) {
         this.folder = folder;
         this.documentId = documentId;

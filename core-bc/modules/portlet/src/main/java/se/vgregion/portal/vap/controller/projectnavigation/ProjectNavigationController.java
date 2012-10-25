@@ -29,9 +29,7 @@ public class ProjectNavigationController extends BaseController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProjectNavigationController.class);
 	
-    @Autowired
-    public ProjectNavigationController(UserEventsService userEventsService) {
-        super.userEventsService = userEventsService;
+    public ProjectNavigationController() {
     }
 
     @RenderMapping

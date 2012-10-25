@@ -30,8 +30,8 @@ public class ViewDocumentController extends BaseController {
     @Autowired
     public ViewDocumentController(DocumentSearchService documentSearchService,
                                   UserEventsService userEventsService) {
-        super.documentSearchService = documentSearchService;
-        super.userEventsService = userEventsService;
+        setDocumentSearchService(documentSearchService);
+        setUserEventsService(userEventsService);
     }
 
     @RenderMapping
@@ -45,7 +45,7 @@ public class ViewDocumentController extends BaseController {
         logDocumentEvent(request);
 
         try {
-        	SearchResult result = documentSearchService.search(Arrays.asList(documentId));
+        	SearchResult result = getDocumentSearchService().search(Arrays.asList(documentId));
         	
             List<Document> documents = result.getComponents().getDocuments();
 

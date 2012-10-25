@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * Domain class representing a document.
+ *
  * @author Patrik Bergström
  */
 @JsonIgnoreProperties({"revisiondateAsDateObject", "dcDateValidToAsDateObject"})
@@ -18,7 +20,7 @@ public class Document {
     private String title;
     private String revisiondate;
     private String source;
-	private String url;
+    private String url;
     private String description;
     private String author;
     private String extracted_html;
@@ -26,22 +28,22 @@ public class Document {
     private List<String> dc_publisher_forunit;
     private String dc_date_validto_dt;
 
-	public String getId() {
+    public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public String getId_hash() {
-		return id_hash;
-	}
+        return id_hash;
+    }
 
     public void setId_hash(String id_hash) {
-		this.id_hash = id_hash;		
-	}
-	
+        this.id_hash = id_hash;
+    }
+
 
     public String getTitle() {
         return title;
@@ -59,6 +61,11 @@ public class Document {
         this.revisiondate = revisiondate;
     }
 
+    /**
+     * Get the revisiondate as a {@link Date} object instead of as a {@link String}.
+     *
+     * @return the {@link Date}
+     */
     public Date getRevisiondateAsDateObject() {
         if (revisiondate == null) {
             return null;
@@ -117,60 +124,65 @@ public class Document {
     }
 
     public void setFormat(List<String> formatList) {
-    	
-    	// Temporary setter while repository returns format as a list
-    	
-    	String format = "";
-    	
-    	if(formatList != null) {
-	    	if(formatList.size() > 0) {
-	    		format = formatList.get(0);
-	    	}
-    	}
-    	
-        this.format = format;
-    }
-    
-	public List<String> getDc_publisher_forunit() {
-		return dc_publisher_forunit;
-	}
 
-	public void setDc_publisher_forunit(List<String> dc_publisher_forunit) {
-		this.dc_publisher_forunit = dc_publisher_forunit;
-	}    
+        // Temporary setter while repository returns format as a list
+
+        String formatToSet = "";
+
+        if (formatList != null) {
+            if (formatList.size() > 0) {
+                formatToSet = formatList.get(0);
+            }
+        }
+
+        this.format = formatToSet;
+    }
+
+    public List<String> getDc_publisher_forunit() {
+        return dc_publisher_forunit;
+    }
+
+    public void setDc_publisher_forunit(List<String> dc_publisher_forunit) {
+        this.dc_publisher_forunit = dc_publisher_forunit;
+    }
 
     @Override
     public String toString() {
-        return "Document{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                '}';
+        return "Document{"
+                + "id='" + id + '\''
+                + ", title='" + title + '\''
+                + '}';
     }
 
-	public String getDc_date_validto_dt() {
-		return dc_date_validto_dt;
-	}
+    public String getDc_date_validto_dt() {
+        return dc_date_validto_dt;
+    }
 
-	public void setDc_date_validto_dt(String dc_date_validto_dt) {
-		this.dc_date_validto_dt = dc_date_validto_dt;
-	}
-	
+    public void setDc_date_validto_dt(String dc_date_validto_dt) {
+        this.dc_date_validto_dt = dc_date_validto_dt;
+    }
+
+    /**
+     * Get the "valid to" date as a {@link Date} object.
+     *
+     * @return the "valid to" date as a {@link Date} object.
+     */
     public Date getDcDateValidToAsDateObject() {
-    	Date dcDateValidToAsDateObject = null;
-    	
+        Date dcDateValidToAsDateObject = null;
+
         if (dc_date_validto_dt != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd HH:mm:ss");
             try {
-            	dcDateValidToAsDateObject = sdf.parse(dc_date_validto_dt);
+                dcDateValidToAsDateObject = sdf.parse(dc_date_validto_dt);
             } catch (ParseException e) {
                 e.printStackTrace();
                 return null;
             }
         }
-        
+
         return dcDateValidToAsDateObject;
 
     }
-	
-	
+
+
 }
