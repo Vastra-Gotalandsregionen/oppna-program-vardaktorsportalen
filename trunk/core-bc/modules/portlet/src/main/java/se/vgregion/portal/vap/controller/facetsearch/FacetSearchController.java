@@ -21,6 +21,8 @@ import java.net.URLEncoder;
 import java.util.List;
 
 /**
+ * Controller for the facet search portlet.
+ *
  * @author Patrik Bergström
  */
 @Controller
@@ -29,11 +31,24 @@ public class FacetSearchController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FacetSearchController.class);
 
+    /**
+     * Constructor.
+     *
+     * @param documentSearchService the {@link DocumentSearchService}
+     */
     @Autowired
     public FacetSearchController(DocumentSearchService documentSearchService) {
         setDocumentSearchService(documentSearchService);
     }
 
+    /**
+     * The default render method. If the searchResultJson parameter is set as a public render parameter it will be
+     * picked up, parsed, and set on the request.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the view
+     */
     @RenderMapping
     public String showFacetSearch(RenderRequest request, RenderResponse response) {
         String searchResultJson = request.getParameter("searchResultJson");
@@ -44,10 +59,10 @@ public class FacetSearchController extends BaseController {
             if (searchResultJson != null) {
                 SearchResult parsed = JsonUtil.parse(searchResultJson);
                 request.setAttribute("searchResult", parsed);
-                
+
                 request.setAttribute("anyAppliedItems", anyAppliedItems(parsed));
                 request.setAttribute("anySelectableItems", anySelectableItems(parsed));
-                
+
                 request.setAttribute("searchTerm", request.getParameter("searchTerm"));
             }
 
@@ -58,6 +73,13 @@ public class FacetSearchController extends BaseController {
         return "facet-search";
     }
 
+    /**
+     * The action method which is executed when a facet search is performed.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException IOException
+     */
     @ActionMapping(params = "action=facetSearch")
     public void search(ActionRequest request, ActionResponse response) throws IOException {
         String searchQuery = request.getParameter("searchQuery");
@@ -75,6 +97,13 @@ public class FacetSearchController extends BaseController {
         }
     }
 
+    /**
+     * Method executed when the "{http://liferay.com/events}vap.searchResultJson" event is published. It sets the
+     * searchResultJson parameter.
+     *
+     * @param request  the request
+     * @param response the response
+     */
     @EventMapping("{http://liferay.com/events}vap.searchResultJson")
     public void setSearchResultJson(EventRequest request, EventResponse response) {
         String value = (String) request.getEvent().getValue();
@@ -93,11 +122,11 @@ public class FacetSearchController extends BaseController {
         for (Entry entry : searchResult.getComponents().getFacets().getEntries()) {
             List<SelectableItem> selectableItems = entry.getSelectableItems();
             if (selectableItems != null && selectableItems.size() > 0) {
-            	for(SelectableItem selectableItem : selectableItems) {
-            		if(selectableItem.getCount() > 0) {
-            			return true;		
-            		}
-            	}
+                for (SelectableItem selectableItem : selectableItems) {
+                    if (selectableItem.getCount() > 0) {
+                        return true;
+                    }
+                }
             }
         }
 

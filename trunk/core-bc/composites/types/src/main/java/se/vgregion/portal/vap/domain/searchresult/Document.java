@@ -123,6 +123,12 @@ public class Document {
         return format;
     }
 
+    /**
+     * Setter method that takes a list argument and takes the first element in the list as the format string. Used by
+     * JSON parser.
+     *
+     * @param formatList
+     */
     public void setFormat(List<String> formatList) {
 
         // Temporary setter while repository returns format as a list

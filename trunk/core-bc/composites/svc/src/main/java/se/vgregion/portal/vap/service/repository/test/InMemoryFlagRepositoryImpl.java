@@ -8,6 +8,8 @@ import se.vgregion.portal.vap.domain.jpa.FlagPk;
 import java.util.Map;
 
 /**
+ * Implementation of {@link InMemoryFlagRepository}.
+ *
  * @author Patrik Bergström
  */
 @Repository

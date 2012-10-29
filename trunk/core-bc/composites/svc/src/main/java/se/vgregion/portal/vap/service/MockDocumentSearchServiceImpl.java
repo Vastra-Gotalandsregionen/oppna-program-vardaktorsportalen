@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.util.*;
 
 /**
+ * Mock service returning dummy responses.
+ *
  * @author Patrik Bergström
  */
 public class MockDocumentSearchServiceImpl implements DocumentSearchService {
@@ -29,6 +31,9 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
 
     private Set<String> wordPile = new HashSet<String>();
 
+    /**
+     * Constructor.
+     */
     public MockDocumentSearchServiceImpl() {
         Directory d = new RAMDirectory();
         try {
@@ -71,7 +76,8 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
     public String searchJsonReply(String query) throws DocumentSearchServiceException {
-        SearchResult result = search(query, 0, 10);
+        final int size = 10;
+        SearchResult result = search(query, 0, size);
 
         try {
             return JsonUtil.format(result, false);
@@ -111,7 +117,8 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
         try {
 
             Query query = queryParser.parse(luceneQueryString);
-            TopDocs search = indexSearcher.search(query, 100);
+            final int topNHits = 100;
+            TopDocs search = indexSearcher.search(query, topNHits);
             ScoreDoc[] scoreDocs = search.scoreDocs;
 
             for (ScoreDoc scoreDoc : scoreDocs) {
@@ -152,15 +159,16 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
         Facets facets = new Facets();
         Entry entry = new Entry();
 
+        final int count = 80;
         if (queryString.contains("&facet=true")) {
             AppliedItem appliedItem = new AppliedItem();
-            appliedItem.setCount(80);
+            appliedItem.setCount(count);
             appliedItem.setDisplayName("TestFacett");
             appliedItem.setQuery(queryString.replaceAll("&facet=true", ""));
             entry.setAppliedItems(Arrays.asList(appliedItem));
         } else {
             SelectableItem selectableItem = new SelectableItem();
-            selectableItem.setCount(80);
+            selectableItem.setCount(count);
             selectableItem.setDisplayName("TestFacett");
             selectableItem.setQuery(queryString + "&facet=true");
             entry.setSelectableItems(Arrays.asList(selectableItem));
@@ -173,7 +181,7 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
 
     @Override
     public SearchResult search(List<String> md5Sums) {
-        throw new UnsupportedOperationException(); // todo
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -190,37 +198,49 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
         return suggestions;
     }
 
-    String aroundTheWorldInEightyDays = "This is a book excerpt. IN WHICH PASSEPARTOUT IS CONVINCED THAT HE HAS AT LAST FOUND HIS IDEAL \n" +
-            "‘Faith,’ muttered Passepartout, somewhat flurried, ‘I’ve seen people at Madame Tussaud’s as lively as my new master!’\n" +
-            "Madame Tussaud’s ‘people,’ let it be said, are of wax, and are much visited in London; speech is all that is wanting to make them human. \n" +
-            "During his brief interview with Mr. Fogg, Passepartout had been carefully observing him. He appeared to be a man about forty years of  age, with fine, handsome \n" +
-            "features, and a tall, well-shaped figure; his hair and whiskers were light, his forehead compact and unwrinkled, his face rather pale, his teeth magnificent. His countenance possessed in the highest degree what physiognomists call ‘repose  in action,’ a quality of those who act rather than talk. Calm and phlegmatic, with a clear eye, Mr. Fogg seemed a perfect type of that English composure which Angelica Kauffmann has so skilfully \n" +
-            "represented on canvas. Seen in the various phases of his daily life, he gave the idea of being perfectly wellbalanced, as exactly regulated as a Leroy chronometer. Phileas Fogg was, indeed, exactitude personified, and this was betrayed even in the expression of his very hands and feet; for in men, as well as in animals, the limbs themselves are expressive of the passions.";
+    private String aroundTheWorldInEightyDays = "This is a book excerpt. IN WHICH PASSEPARTOUT IS CONVINCED THAT HE HAS"
+            + " AT LAST"
+            + " FOUND HIS IDEAL ‘Faith,’ muttered Passepartout, somewhat flurried, ‘I’ve seen people at Madame"
+            + " Tussaud’s as lively as my new master!’ Madame Tussaud’s ‘people,’ let it be said, are of wax, and are"
+            + " much visited in London; speech is all that is wanting to make them human. \nDuring his brief interview"
+            + " with Mr. Fogg, Passepartout had been carefully observing him. He appeared to be a man about forty"
+            + " years of  age, with fine, handsome features, and a tall, well-shaped figure; his hair and whiskers were"
+            + " light, his forehead compact and unwrinkled, his face rather pale, his teeth magnificent. His"
+            + " countenance possessed in the highest degree what physiognomists call ‘repose  in action,’ a quality of"
+            + " those who act rather than talk. Calm and phlegmatic, with a clear eye, Mr. Fogg seemed a perfect type"
+            + " of that English composure which Angelica Kauffmann has so skilfully represented on canvas. Seen in the"
+            + " various phases of his daily life, he gave the idea of being perfectly wellbalanced, as exactly"
+            + " regulated as a Leroy chronometer. Phileas Fogg was, indeed, exactitude personified, and this was"
+            + " betrayed even in the expression of his very hands and feet; for in men, as well as in animals, the"
+            + " limbs themselves are expressive of the passions.";
 
-    String mobyDick = "This is a book excerpt. Call me Ishmael. Some years ago--never mind how long precisely--having little or no money in" +
-            " my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see" +
-            " the watery part of the world. It is a way I have of driving off the spleen and regulating the" +
-            " circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly" +
-            " November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and" +
-            " bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand" +
-            " of me, that it requires a strong moral principle to prevent me from deliberately stepping into the" +
-            " street, and methodically knocking people's hats off--then, I account it high time to get to sea as" +
-            " soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws" +
-            " himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but" +
-            " knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings" +
-            " towards the ocean with me.";
+    private String mobyDick = "This is a book excerpt. Call me Ishmael. Some years ago--never mind how long precisely"
+            + "--having little or no money in"
+            + " my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see"
+            + " the watery part of the world. It is a way I have of driving off the spleen and regulating the"
+            + " circulation. Whenever I find myself growing grim about the mouth; whenever it is a damp, drizzly"
+            + " November in my soul; whenever I find myself involuntarily pausing before coffin warehouses, and"
+            + " bringing up the rear of every funeral I meet; and especially whenever my hypos get such an upper hand"
+            + " of me, that it requires a strong moral principle to prevent me from deliberately stepping into the"
+            + " street, and methodically knocking people's hats off--then, I account it high time to get to sea as"
+            + " soon as I can. This is my substitute for pistol and ball. With a philosophical flourish Cato throws"
+            + " himself upon his sword; I quietly take to the ship. There is nothing surprising in this. If they but"
+            + " knew it, almost all men in their degree, some time or other, cherish very nearly the same feelings"
+            + " towards the ocean with me.";
 
-    String oliverTwist = "This is a book excerpt. Among other public buildings in a certain town, which for many reasons it will be prudent" +
-            " to refrain from mentioning, and to which I will assign no fictitious name, there is one anciently" +
-            " common to most towns, great or small: to wit, a workhouse; and in this workhouse was born; on a day" +
-            " and date which I need not trouble myself to repeat, inasmuch as it can be of no possible consequence" +
-            " to the reader, in this stage of the business at all events; the item of mortality whose name is" +
-            " prefixed to the head of this chapter.";
+    private String oliverTwist = "This is a book excerpt. Among other public buildings in a certain town, which for"
+            + " many reasons it will be prudent"
+            + " to refrain from mentioning, and to which I will assign no fictitious name, there is one anciently"
+            + " common to most towns, great or small: to wit, a workhouse; and in this workhouse was born; on a day"
+            + " and date which I need not trouble myself to repeat, inasmuch as it can be of no possible consequence"
+            + " to the reader, in this stage of the business at all events; the item of mortality whose name is"
+            + " prefixed to the head of this chapter.";
 
-    String robinsonCrusoe = "This is a book excerpt. I WAS born in the year 1632, in the city of York, of a good family, though not of that" +
-            " country, my father being a foreigner of Bremen, who settled first at Hull. He got a good estate by" +
-            " merchandise, and leaving off his trade, lived afterwards at York, from whence he had married my mother," +
-            " whose relations were named Robinson, a very good family in that country, and from whom I was called" +
-            " Robinson Kreutznaer; but, by the usual corruption of words in England, we are now called - nay we call" +
-            " ourselves and write our name - Crusoe; and so my companions always called me.";
+    private String robinsonCrusoe = "This is a book excerpt. I WAS born in the year 1632, in the city of York, of a"
+            + " good family, though not of that"
+            + " country, my father being a foreigner of Bremen, who settled first at Hull. He got a good estate by"
+            + " merchandise, and leaving off his trade, lived afterwards at York, from whence he had married my mother,"
+            + " whose relations were named Robinson, a very good family in that country, and from whom I was called"
+            + " Robinson Kreutznaer; but, by the usual corruption of words in England, we are now called - nay we call"
+            + " ourselves and write our name - Crusoe; and so my companions always called me.";
 }

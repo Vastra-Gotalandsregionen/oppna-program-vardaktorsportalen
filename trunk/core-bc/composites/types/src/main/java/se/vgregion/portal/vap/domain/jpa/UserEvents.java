@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * JPA entity class representing a user event which is used to retrieve "latest documents".
+ *
  * @author Patrik Bergström
  */
 @Entity
@@ -21,9 +23,17 @@ public class UserEvents extends AbstractEntity<Long> implements Serializable {
     @CollectionTable(name = "vgr_vap_user_events_recent_document_ids")
     private List<String> recentDocumentIds = new ArrayList<String>();
 
+    /**
+     * Constructor.
+     */
     public UserEvents() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param userId the userId
+     */
     public UserEvents(Long userId) {
         this.userId = userId;
     }

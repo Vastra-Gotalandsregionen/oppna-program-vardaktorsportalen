@@ -1,15 +1,28 @@
 package se.vgregion.portal.vap.service;
 
 /**
+ * Exception class that is thrown when exception occurs in {@link DocumentSearchService}.
+ *
  * @author Patrik Bergström
  */
 public class DocumentSearchServiceException extends Throwable {
 
+    /**
+     * Constructor.
+     *
+     * @param message the message
+     */
     public DocumentSearchServiceException(String message) {
         super(message);
     }
 
-    public DocumentSearchServiceException(String message, Throwable throwable) {
-        super(message, throwable);
+    /**
+     * Constructor.
+     *
+     * @param message the message
+     * @param cause the cause
+     */
+    public DocumentSearchServiceException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

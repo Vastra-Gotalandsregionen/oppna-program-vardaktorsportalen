@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Controller for latest documents.
+ *
  * @author Patrik Bergström
  */
 @Controller
@@ -29,11 +31,23 @@ public class LatestDocumentsController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LatestDocumentsController.class);
 
+    /**
+     * Constructor.
+     *
+     * @param userEventsService the {@link UserEventsService}
+     */
     @Autowired
     public LatestDocumentsController(UserEventsService userEventsService) {
         setUserEventsService(userEventsService);
     }
 
+    /**
+     * Find the recently viewed documents, set them as a request attribute and show the view.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the view
+     */
     @RenderMapping
     public String showLatestDocuments(RenderRequest request, RenderResponse response) {
 
@@ -46,19 +60,25 @@ public class LatestDocumentsController extends BaseController {
                 documents = getUserEventsService().findRecentDocuments(user.getUserId());
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);
-                request.setAttribute("errorMessage", "Det gick inte att hämta senaste dokument på grund av tekniskt fel.");
+                request.setAttribute("errorMessage", "Det gick inte att hämta senaste dokument på grund av tekniskt"
+                        + " fel.");
             }
 
             request.setAttribute("documents", documents);
         }
-        
-        request.setAttribute("isLoggedIn", isLoggedIn);
 
-        addViewDocumentAttributes(request);
+        request.setAttribute("isLoggedIn", isLoggedIn);
 
         return "latest-documents";
     }
 
+    /**
+     * This method logs the document the user clicked on and redirects to the document url.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException IOException
+     */
     @ActionMapping(params = "action=interceptDocumentSourceClick")
     public void interceptDocumentSourceClick(ActionRequest request, ActionResponse response) throws IOException {
 

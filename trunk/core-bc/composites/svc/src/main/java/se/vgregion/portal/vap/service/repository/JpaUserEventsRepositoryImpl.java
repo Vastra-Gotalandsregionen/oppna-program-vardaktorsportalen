@@ -5,6 +5,8 @@ import se.vgregion.dao.domain.patterns.repository.db.jpa.DefaultJpaRepository;
 import se.vgregion.portal.vap.domain.jpa.UserEvents;
 
 /**
+ * Implementation of {@link JpaUserEventsRepository}.
+ *
  * @author Patrik Bergström
  */
 @Repository
