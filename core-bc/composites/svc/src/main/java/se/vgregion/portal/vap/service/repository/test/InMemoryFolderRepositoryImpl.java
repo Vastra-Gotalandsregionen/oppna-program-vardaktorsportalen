@@ -9,6 +9,8 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
+ * Implementation of {@link InMemoryFolderRepository}s.
+ *
  * @author Patrik Bergström
  */
 @Repository

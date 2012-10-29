@@ -26,9 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Controller for the search result.
+ *
  * @author Patrik Bergström
  */
-
 @Controller
 @RequestMapping(value = "VIEW")
 public class SearchResultController extends BaseController {
@@ -36,6 +37,14 @@ public class SearchResultController extends BaseController {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchResultController.class);
     private static final int SEARCH_SIZE_DEFAULT = 10;
 
+    /**
+     * Constructor.
+     *
+     * @param documentSearchService the {@link DocumentSearchService}
+     * @param flagService           the {@link FlagService}
+     * @param bookmarkService       the {@link BookmarkService}
+     * @param userEventsService     the {@link UserEventsService}
+     */
     @Autowired
     public SearchResultController(DocumentSearchService documentSearchService,
                                   FlagService flagService,
@@ -47,15 +56,27 @@ public class SearchResultController extends BaseController {
         setUserEventsService(userEventsService);
     }
 
+    /**
+     * Shows the search-result view.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the view
+     */
     @RenderMapping()
     public String showSearchResult(RenderRequest request, RenderResponse response) {
         return "search-result";
     }
 
+    /**
+     * Paginate the search result.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the search-result view
+     */
     @RenderMapping(params = "isPaginatorCall=true")
     public String paginate(RenderRequest request, RenderResponse response) {
-
-        addViewDocumentAttributes(request);
 
         RequestUri requestUri = null;
 
@@ -112,11 +133,16 @@ public class SearchResultController extends BaseController {
         return "search-result";
     }
 
+    /**
+     * Show the search result when a search is already made, without re-searching.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the search-result view
+     */
     @RenderMapping(params = "searchResultJson")
     public String showSearchResultWithGivenSearchResult(RenderRequest request, RenderResponse response) {
         final User user = getUser(request);
-
-        addViewDocumentAttributes(request);
 
         if (isLoggedIn(user)) {
             populateRequestWithBookmarks(request, user);
@@ -146,6 +172,13 @@ public class SearchResultController extends BaseController {
         return "search-result";
     }
 
+    /**
+     * Log the document click-event so it will be added to "latest documents" for a user.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException IOException
+     */
     @ActionMapping(params = "action=interceptDocumentSourceClick")
     public void interceptDocumentSourceClick(ActionRequest request, ActionResponse response) throws IOException {
 
@@ -155,12 +188,24 @@ public class SearchResultController extends BaseController {
         response.sendRedirect(targetUrl);
     }
 
+    /**
+     * Methods that consumes "{http://liferay.com/events}vap.searchResultJson" events and sets the searchResultJson
+     * renderParameter.
+     *
+     * @param request  request
+     * @param response response
+     */
     @EventMapping("{http://liferay.com/events}vap.searchResultJson")
     public void setSearchResult(EventRequest request, EventResponse response) {
         String value = (String) request.getEvent().getValue();
         response.setRenderParameter("searchResultJson", value);
     }
 
+    /**
+     * Add a {@link Bookmark}.
+     *
+     * @param request the request
+     */
     @ResourceMapping("bookmarkEntry")
     public void bookmarkEntry(ResourceRequest request) {
         User user = getUser(request);
@@ -171,6 +216,11 @@ public class SearchResultController extends BaseController {
         getBookmarkService().addBookmark(user.getUserId(), documentId, folderName);
     }
 
+    /**
+     * Toggle a flag.
+     *
+     * @param request the request
+     */
     @ResourceMapping("toggleFlag")
     public void toggleFlag(ResourceRequest request) {
         User user = getUser(request);
@@ -185,7 +235,8 @@ public class SearchResultController extends BaseController {
     }
 
     private void populateRequestWithBookmarks(PortletRequest request, User user) {
-        // todo the bookmarks may be better to load by a common portlet and set via public render parameter json serialized
+        // todo the bookmarks may be better to load by a common portlet and set via public render parameter json
+        // serialized
         Collection<Bookmark> bookmarks = getBookmarkService().findBookmarksByUserId(user.getUserId());
 
         // Map documentId to bookmark

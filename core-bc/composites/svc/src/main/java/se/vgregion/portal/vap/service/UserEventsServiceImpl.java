@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Implementation of {@link UserEventsService}.
+ *
  * @author Patrik Bergström
  */
 @Service
@@ -22,6 +24,12 @@ public class UserEventsServiceImpl implements UserEventsService {
     private UserEventsRepository userEventsRepository;
     private DocumentSearchService documentSearchService;
 
+    /**
+     * Constructor.
+     *
+     * @param userEventsRepository the {@link UserEventsRepository}
+     * @param documentSearchService the {@link DocumentSearchService}
+     */
     @Autowired
     public UserEventsServiceImpl(UserEventsRepository userEventsRepository,
                                  DocumentSearchService documentSearchService) {

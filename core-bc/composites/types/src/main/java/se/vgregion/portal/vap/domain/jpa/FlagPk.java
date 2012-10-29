@@ -4,6 +4,8 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 /**
+ * A JPA {@link Embeddable} primary key class.
+ *
  * @author Patrik Bergström
  */
 @Embeddable
@@ -12,9 +14,18 @@ public class FlagPk implements Serializable {
     private Long userId;
     private String documentId;
 
+    /**
+     * Constructor.
+     */
     public FlagPk() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param userId     the userId
+     * @param documentId the documentId
+     */
     public FlagPk(Long userId, String documentId) {
         this.userId = userId;
         this.documentId = documentId;
@@ -38,13 +49,21 @@ public class FlagPk implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         FlagPk flagPk = (FlagPk) o;
 
-        if (documentId != null ? !documentId.equals(flagPk.documentId) : flagPk.documentId != null) return false;
-        if (userId != null ? !userId.equals(flagPk.userId) : flagPk.userId != null) return false;
+        if (documentId != null ? !documentId.equals(flagPk.documentId) : flagPk.documentId != null) {
+            return false;
+        }
+        if (userId != null ? !userId.equals(flagPk.userId) : flagPk.userId != null) {
+            return false;
+        }
 
         return true;
     }
@@ -52,7 +71,8 @@ public class FlagPk implements Serializable {
     @Override
     public int hashCode() {
         int result = userId != null ? userId.hashCode() : 0;
-        result = 31 * result + (documentId != null ? documentId.hashCode() : 0);
+        final int prime = 31;
+        result = prime * result + (documentId != null ? documentId.hashCode() : 0);
         return result;
     }
 }

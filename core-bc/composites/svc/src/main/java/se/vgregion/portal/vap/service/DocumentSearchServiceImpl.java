@@ -26,6 +26,8 @@ import java.net.URLEncoder;
 import java.util.*;
 
 /**
+ * Implementation of {@link DocumentSearchService}. The implementation queries a webservice on specific url:s.
+ *
  * @author Patrik Bergström
  */
 @Service
@@ -34,16 +36,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentSearchServiceImpl.class);
 
     private String queryUrlBase;
-    private HttpClient httpClient;
+    private HttpClient httpClientSearch;
     private HttpClient httpClientAutoSuggestion;
     private String queryStringStructure = "?q=%s&offset=%s&hits=%s";
 
     @Value("${autoSuggestUrl}")
-    private String autoSuggestUrl;// = "http://gbg.findwise.com:9092/fwqc/complete.do?format=json&limit=10&q=%s";
+    private String autoSuggestUrl;
 
     @Value("${singleDocumentQueryUrl}")
     private String singleDocumentQueryUrl;
 
+    /**
+     * Constructor.
+     *
+     * @param queryUrlBase the base for the query url
+     */
     public DocumentSearchServiceImpl(String queryUrlBase) {
         this.queryUrlBase = queryUrlBase;
 
@@ -52,12 +59,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     private void initHttpClient() {
         ThreadSafeClientConnManager connManager = new ThreadSafeClientConnManager();
-        connManager.setDefaultMaxPerRoute(50);
-        connManager.setMaxTotal(50);
-        httpClient = new DefaultHttpClient(connManager);
+        final int fifty = 50;
+        connManager.setDefaultMaxPerRoute(fifty);
+        connManager.setMaxTotal(fifty);
+        httpClientSearch = new DefaultHttpClient(connManager);
         ThreadSafeClientConnManager connManagerAutoSuggestion = new ThreadSafeClientConnManager();
-        connManagerAutoSuggestion.setDefaultMaxPerRoute(50);
-        connManagerAutoSuggestion.setMaxTotal(50);
+        connManagerAutoSuggestion.setDefaultMaxPerRoute(fifty);
+        connManagerAutoSuggestion.setMaxTotal(fifty);
         httpClientAutoSuggestion = new DefaultHttpClient(connManagerAutoSuggestion);
     }
 
@@ -65,7 +73,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     public String searchJsonReply(String query) throws DocumentSearchServiceException {
         try {
             String url = queryUrlBase + "?" + query;
-            InputStream content = executeGetRequest(url, httpClient);
+            InputStream content = executeGetRequest(url, httpClientSearch);
 
             return IOUtils.toString(content);
         } catch (IOException e) {
@@ -78,7 +86,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         try {
             String queryEncoded = URLEncoder.encode(query, "UTF-8");
             String url = getCompleteUrl(queryEncoded, offset, size);
-            InputStream content = executeGetRequest(url, httpClient);
+            InputStream content = executeGetRequest(url, httpClientSearch);
 
             return IOUtils.toString(content);
         } catch (IOException e) {
@@ -91,7 +99,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         String url = String.format(singleDocumentQueryUrl, makeCommaSeparatedString(md5Sums));
         try {
-            InputStream inputStream = executeGetRequest(url, httpClient);
+            InputStream inputStream = executeGetRequest(url, httpClientSearch);
 
             return IOUtils.toString(inputStream);
         } catch (IOException e) {
@@ -104,7 +112,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     public SearchResult search(String query) throws DocumentSearchServiceException {
         try {
             String url = queryUrlBase + "?" + query;
-            InputStream content = executeGetRequest(url, httpClient);
+            InputStream content = executeGetRequest(url, httpClientSearch);
             SearchResult result = JsonUtil.parseSearchResult(content);
             return result;
         } catch (IOException e) {
@@ -118,7 +126,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         try {
             String queryEncoded = URLEncoder.encode(query, "UTF-8");
             String url = getCompleteUrl(queryEncoded, offset, size);
-            InputStream content = executeGetRequest(url, httpClient);
+            InputStream content = executeGetRequest(url, httpClientSearch);
 
             SearchResult result = JsonUtil.parseSearchResult(content);
 
@@ -136,7 +144,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         String url = String.format(singleDocumentQueryUrl, commaSeparatedString);
 
         try {
-            InputStream inputStream = executeGetRequest(url, httpClient);
+            InputStream inputStream = executeGetRequest(url, httpClientSearch);
 
             SearchResult result = JsonUtil.parseSearchResult(inputStream);
 
@@ -199,18 +207,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return toBeReturned;
     }
 
-    private InputStream executeGetRequest(String url, HttpClient httpClient) throws IOException, DocumentSearchServiceException {
+    private InputStream executeGetRequest(String url, HttpClient httpClient) throws IOException,
+            DocumentSearchServiceException {
         HttpGet httpGet = new HttpGet(url);
 
         // Set params
         final HttpParams params = httpClient.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, 2000);
-        HttpConnectionParams.setSoTimeout(params, 2000);
+        final int twoThousand = 2000;
+        HttpConnectionParams.setConnectionTimeout(params, twoThousand);
+        HttpConnectionParams.setSoTimeout(params, twoThousand);
 
         HttpResponse response = httpClient.execute(httpGet);
 
         final int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode != 200) {
+        final int ok = 200;
+        if (statusCode != ok) {
             throw new DocumentSearchServiceException("Search failed with response code = " + statusCode);
         }
 

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Domain class used for parsing JSON.
+ *
  * @author Patrik Bergström
  */
 public class Entry {

@@ -46,72 +46,94 @@ import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.PortletURLFactoryUtil;
 
 /**
+ * Controller for searches.
+ *
  * @author Patrik Bergström
  */
-
 @Controller
 @RequestMapping(value = "VIEW")
 public class SearchController extends BaseController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchController.class);
 
+    /**
+     * Constructor.
+     *
+     * @param documentSearchService the {@link DocumentSearchService}
+     */
     @Autowired
     public SearchController(DocumentSearchService documentSearchService) {
         setDocumentSearchService(documentSearchService);
     }
 
+    /**
+     * Show the search view.
+     *
+     * @param request  the request
+     * @param response the response
+     * @param model    the model
+     * @return the view
+     */
     @RenderMapping
     public String showSearch(RenderRequest request, RenderResponse response, Model model) {
-    	
-    	User user = getUser(request);
-    	boolean isLoggedIn = isLoggedIn(user);
-    	
-    	String searchLayoutFriendlyURL = request.getPreferences().getValue("searchLayoutFriendlyURL", null);
-    	boolean isStartPageSearch = (searchLayoutFriendlyURL != null);
-    	
-    	model.addAttribute("isStartPageSearch", isStartPageSearch);
-    	model.addAttribute("isLoggedIn", isLoggedIn);
-    	
+
+        User user = getUser(request);
+        boolean isLoggedIn = isLoggedIn(user);
+
+        String searchLayoutFriendlyURL = request.getPreferences().getValue("searchLayoutFriendlyURL", null);
+        boolean isStartPageSearch = (searchLayoutFriendlyURL != null);
+
+        model.addAttribute("isStartPageSearch", isStartPageSearch);
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
         return "search";
     }
 
+    /**
+     * Redirect to an action url along with the searchTerm parameter among others.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException IOException
+     */
     @ActionMapping(params = "action=search")
     public void search(ActionRequest request, ActionResponse response) throws IOException {
 
-    	String searchLayoutFriendlyURL = request.getPreferences().getValue("searchLayoutFriendlyURL", null);
-    	
-    	ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-    	String searchTerm = ParamUtil.getString(request, "searchTerm", "");
-    	
+        String searchLayoutFriendlyURL = request.getPreferences().getValue("searchLayoutFriendlyURL", null);
+
+        ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
+        String searchTerm = ParamUtil.getString(request, "searchTerm", "");
+
         if (searchLayoutFriendlyURL != null) {
-        	
-        	long groupId = themeDisplay.getScopeGroupId();
-        	boolean isPrivateLayout = themeDisplay.getLayout().isPrivateLayout();
-			try {
-				Layout searchLayout = LayoutLocalServiceUtil.getFriendlyURLLayout(groupId, isPrivateLayout, searchLayoutFriendlyURL);
-				long plid = searchLayout.getPlid();
-				
-				String portletId = "search_WAR_vapportlet";
-				
-				HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
-				
-				PortletURL searchURL = PortletURLFactoryUtil.create(httpRequest, portletId, plid, ActionRequest.ACTION_PHASE);
-				searchURL.setWindowState(WindowState.NORMAL);
-				searchURL.setParameter("action", "search");
-				searchURL.setParameter("searchTerm", searchTerm);
-				
-				response.sendRedirect(searchURL.toString());
-			} catch (PortalException e) {
-				LOGGER.error(e.getMessage(), e);
-			} catch (SystemException e) {
-				LOGGER.error(e.getMessage(), e);
-			} catch (WindowStateException e) {
-				LOGGER.error(e.getMessage(), e);
-				
-			}
+
+            long groupId = themeDisplay.getScopeGroupId();
+            boolean isPrivateLayout = themeDisplay.getLayout().isPrivateLayout();
+            try {
+                Layout searchLayout = LayoutLocalServiceUtil.getFriendlyURLLayout(groupId, isPrivateLayout,
+                        searchLayoutFriendlyURL);
+                long plid = searchLayout.getPlid();
+
+                String portletId = "search_WAR_vapportlet";
+
+                HttpServletRequest httpRequest = PortalUtil.getHttpServletRequest(request);
+
+                PortletURL searchURL = PortletURLFactoryUtil.create(httpRequest, portletId, plid,
+                        ActionRequest.ACTION_PHASE);
+                searchURL.setWindowState(WindowState.NORMAL);
+                searchURL.setParameter("action", "search");
+                searchURL.setParameter("searchTerm", searchTerm);
+
+                response.sendRedirect(searchURL.toString());
+            } catch (PortalException e) {
+                LOGGER.error(e.getMessage(), e);
+            } catch (SystemException e) {
+                LOGGER.error(e.getMessage(), e);
+            } catch (WindowStateException e) {
+                LOGGER.error(e.getMessage(), e);
+
+            }
             return;
-        }
-        else {
+        } else {
             response.setRenderParameter("searchTerm", searchTerm);
 
             String searchQuery = "q=" + URLEncoder.encode(searchTerm, "UTF-8") + "&hits=10&offset=0";
@@ -127,25 +149,32 @@ public class SearchController extends BaseController {
         }
     }
 
+    /**
+     * Query for augoSuggestions. The result is written to the portlet outputstream.
+     *
+     * @param request  the request
+     * @param response the response
+     * @throws IOException IOException
+     */
     @ResourceMapping("autosuggest")
     public void autoSuggest(ResourceRequest request, ResourceResponse response) throws IOException {
-    	String searchTerm = request.getParameter("autoCompleteSearchTerm");
-    	
-    	Collection<String> suggestions = getDocumentSearchService().getAutoSuggestions(searchTerm.toLowerCase());
-    	
+        String searchTerm = request.getParameter("autoCompleteSearchTerm");
+
+        Collection<String> suggestions = getDocumentSearchService().getAutoSuggestions(searchTerm.toLowerCase());
+
         ObjectMapper mapper = new ObjectMapper();
 
-		AutoSuggestResult autoSuggestResult = new AutoSuggestResult();
+        AutoSuggestResult autoSuggestResult = new AutoSuggestResult();
         for (String suggestion : suggestions) {
-        	autoSuggestResult.addKeyValuePair("suggestion", suggestion);
+            autoSuggestResult.addKeyValuePair("suggestion", suggestion);
         }
-        
+
         response.setContentType("application/json");
-        
+
         Writer writer = new OutputStreamWriter(response.getPortletOutputStream(), "UTF-8");
-		mapper.writeValue(writer, autoSuggestResult);
-		
-		writer.close();
+        mapper.writeValue(writer, autoSuggestResult);
+
+        writer.close();
     }
 
 

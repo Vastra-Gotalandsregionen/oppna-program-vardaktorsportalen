@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * JPA entity class representing a folder (a place where a user can place {@link Bookmark}s).
+ *
  * @author Patrik Bergström
  */
 @Entity
@@ -24,9 +26,18 @@ public class Folder extends AbstractEntity<Long> {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "folder")
     private Set<Bookmark> bookmarks = new HashSet<Bookmark>();
 
+    /**
+     * Constructor.
+     */
     public Folder() {
     }
 
+    /**
+     * Constructor.
+     *
+     * @param folderName the folderName
+     * @param userId     the userId
+     */
     public Folder(String folderName, Long userId) {
         this.folderName = folderName;
         this.userId = userId;

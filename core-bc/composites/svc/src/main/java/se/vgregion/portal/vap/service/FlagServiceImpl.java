@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * Implementation of {@link FlagService}.
+ *
  * @author Patrik Bergström
  */
 @Service
@@ -18,6 +20,11 @@ public class FlagServiceImpl implements FlagService {
 
     private FlagRepository flagRepository;
 
+    /**
+     * Constructor.
+     *
+     * @param flagRepository the {@link FlagRepository}
+     */
     @Autowired
     public FlagServiceImpl(FlagRepository flagRepository) {
         this.flagRepository = flagRepository;

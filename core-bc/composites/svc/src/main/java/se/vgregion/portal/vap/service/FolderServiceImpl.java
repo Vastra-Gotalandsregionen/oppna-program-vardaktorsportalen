@@ -9,6 +9,8 @@ import se.vgregion.portal.vap.service.repository.FolderRepository;
 import java.util.Collection;
 
 /**
+ * Implementation of {@link FolderService}.
+ *
  * @author Patrik Bergström
  */
 public class FolderServiceImpl implements FolderService {
@@ -17,6 +19,11 @@ public class FolderServiceImpl implements FolderService {
 
     private FolderRepository folderRepository;
 
+    /**
+     * Constructor.
+     *
+     * @param folderRepository the {@link FolderRepository}
+     */
     @Autowired
     public FolderServiceImpl(FolderRepository folderRepository) {
         this.folderRepository = folderRepository;

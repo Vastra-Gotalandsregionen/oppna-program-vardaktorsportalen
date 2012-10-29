@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Implementation of {@link JpaFlagRepository}s.
+ *
  * @author Patrik Bergström
  */
 @Repository

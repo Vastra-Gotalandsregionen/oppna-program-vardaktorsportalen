@@ -8,6 +8,8 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
+ * JPA entity class representing a flag (a user can flag a document).
+ *
  * @author Patrik Bergström
  */
 @Entity
@@ -17,9 +19,16 @@ public class Flag extends AbstractEntity<FlagPk> implements Serializable {
     @Id
     private FlagPk id;
 
+    /**
+     * Constructor.
+     */
     public Flag() {
     }
 
+    /**
+     * Constructor.
+     * @param id the id
+     */
     public Flag(FlagPk id) {
         this.id = id;
     }

@@ -19,14 +19,22 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Controller class for viewing {@link Document}s.
+ *
  * @author Patrik Bergström
  */
 @Controller
 @RequestMapping(value = "VIEW")
 public class ViewDocumentController extends BaseController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ViewDocumentController.class.getName());
-	
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewDocumentController.class.getName());
+
+    /**
+     * Constructor.
+     *
+     * @param documentSearchService the {@link DocumentSearchService}
+     * @param userEventsService     the {@link UserEventsService}
+     */
     @Autowired
     public ViewDocumentController(DocumentSearchService documentSearchService,
                                   UserEventsService userEventsService) {
@@ -34,8 +42,17 @@ public class ViewDocumentController extends BaseController {
         setUserEventsService(userEventsService);
     }
 
+    /**
+     * Searches for a {@link Document} and shows it in the view.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the view
+     * @throws DocumentSearchServiceException DocumentSearchServiceException
+     */
     @RenderMapping
-    public String showViewDocument(RenderRequest request, RenderResponse response) throws DocumentSearchServiceException {
+    public String showViewDocument(RenderRequest request, RenderResponse response)
+            throws DocumentSearchServiceException {
         String documentId = request.getParameter("documentId");
 
         if (documentId == null) {
@@ -45,35 +62,35 @@ public class ViewDocumentController extends BaseController {
         logDocumentEvent(request);
 
         try {
-        	SearchResult result = getDocumentSearchService().search(Arrays.asList(documentId));
-        	
+            SearchResult result = getDocumentSearchService().search(Arrays.asList(documentId));
+
             List<Document> documents = result.getComponents().getDocuments();
 
             if (documents.size() < 1) {
                 request.setAttribute("errorMessage", "Dokumentet kunde inte hittas.");
             } else if (documents.size() == 1) {
-            	
-            	Document document = documents.get(0);
-            	
-            	String documentHtml = document.getExtracted_html();
-            	
-            	request.setAttribute("document", document);
-            	
+
+                Document document = documents.get(0);
+
+                String documentHtml = document.getExtracted_html();
+
+                request.setAttribute("document", document);
+
                 request.setAttribute("documentHtml", documentHtml);
 
             } else {
-                throw new DocumentSearchServiceException("There should only be on document with a given id. Id ["
+                throw new DocumentSearchServiceException("There should only be one document with a given id. Id ["
                         + documentId + " has duplicates.");
             }
-        	
-        } catch(DocumentSearchServiceException e) {
-        	LOGGER.info("Something is wrong with the search (DocumentSearchServiceException).");
-        	request.setAttribute("errorMessage", "Dokumentet kunde inte hittas.");
-        } catch(NullPointerException e) {
-        	LOGGER.info("Something is wrong with the search (NullPointerException).");
-        	request.setAttribute("errorMessage", "Dokumentet kunde inte hittas.");
+
+        } catch (DocumentSearchServiceException e) {
+            LOGGER.info("Something is wrong with the search (DocumentSearchServiceException).");
+            request.setAttribute("errorMessage", "Dokumentet kunde inte hittas.");
+        } catch (NullPointerException e) {
+            LOGGER.info("Something is wrong with the search (NullPointerException).");
+            request.setAttribute("errorMessage", "Dokumentet kunde inte hittas.");
         }
-        
+
         return "view-document";
     }
 

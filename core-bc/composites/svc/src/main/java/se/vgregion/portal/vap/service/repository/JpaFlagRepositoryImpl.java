@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Implementation of {@link JpaFlagRepository}s.
+ *
  * @author Patrik Bergström
  */
 @Repository
