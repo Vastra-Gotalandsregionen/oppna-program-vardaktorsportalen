@@ -93,10 +93,11 @@ public class SearchResultController extends BaseController {
 
         try {
             searchQuery = URLDecoder.decode(searchQuery, "UTF-8");
-            requestUri = new RequestUri(searchQuery);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error(e.getMessage(), e);
         }
+
+        requestUri = new RequestUri(searchQuery);
 
         SizeOffsetAndPageComponentOffset sizeOffsetAndPageComponentOffset = handlePaginatorParameters(request);
 
@@ -247,7 +248,7 @@ public class SearchResultController extends BaseController {
         request.setAttribute("bookmarks", documentIdBookmark);
     }
 
-    private class SizeOffsetAndPageComponentOffset {
+    private static class SizeOffsetAndPageComponentOffset {
         private PortletRequest request;
         private int deltaSize;
         private int offset;
@@ -302,7 +303,7 @@ public class SearchResultController extends BaseController {
         }
     }
 
-    private class RequestUri {
+    private static class RequestUri {
 
         private final Map<String, String> keyValuePairs = new HashMap<String, String>();
 

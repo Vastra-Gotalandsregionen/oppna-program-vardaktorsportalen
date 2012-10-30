@@ -16,6 +16,8 @@ import java.util.List;
 @Table(name = "vgr_vap_user_events")
 public class UserEvents extends AbstractEntity<Long> implements Serializable {
 
+    private static final long serialVersionUID = -8510690241650333039L;
+
     @Id
     private Long userId;
 
