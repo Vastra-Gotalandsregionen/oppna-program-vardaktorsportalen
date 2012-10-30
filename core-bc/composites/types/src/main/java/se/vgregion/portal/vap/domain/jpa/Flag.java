@@ -16,6 +16,8 @@ import java.io.Serializable;
 @Table(name = "vgr_vap_flag")
 public class Flag extends AbstractEntity<FlagPk> implements Serializable {
 
+    private static final long serialVersionUID = 1079947011450319238L;
+
     @Id
     private FlagPk id;
 

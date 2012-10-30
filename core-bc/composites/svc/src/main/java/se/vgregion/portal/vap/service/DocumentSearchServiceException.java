@@ -5,7 +5,7 @@ package se.vgregion.portal.vap.service;
  *
  * @author Patrik Bergström
  */
-public class DocumentSearchServiceException extends Throwable {
+public class DocumentSearchServiceException extends Exception {
 
     /**
      * Constructor.

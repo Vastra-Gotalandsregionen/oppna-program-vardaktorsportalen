@@ -171,10 +171,15 @@ public class SearchController extends BaseController {
 
         response.setContentType("application/json");
 
-        Writer writer = new OutputStreamWriter(response.getPortletOutputStream(), "UTF-8");
-        mapper.writeValue(writer, autoSuggestResult);
-
-        writer.close();
+        Writer writer = null;
+        try {
+            writer = new OutputStreamWriter(response.getPortletOutputStream(), "UTF-8");
+            mapper.writeValue(writer, autoSuggestResult);
+        } finally {
+            if (writer != null) {
+                writer.close();
+            }
+        }
     }
 
 

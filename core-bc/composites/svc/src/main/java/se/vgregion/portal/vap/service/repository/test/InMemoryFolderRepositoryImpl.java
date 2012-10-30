@@ -6,6 +6,8 @@ import se.vgregion.dao.domain.patterns.repository.inmemory.InMemoryRepository;
 import se.vgregion.portal.vap.domain.jpa.Folder;
 
 import java.lang.reflect.Field;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.*;
 
 /**
@@ -60,12 +62,27 @@ public class InMemoryFolderRepositoryImpl extends InMemoryRepository<Folder, Lon
             throw new RuntimeException("The entity is already persisted");
         }
         try {
-            Field id = object.getClass().getDeclaredField("id");
-            id.setAccessible(true);
+            final Field id = object.getClass().getDeclaredField("id");
+            AccessController.doPrivileged(new ObjectPrivilegedAction(id));
+
             ReflectionUtils.setField(id, object, counter++);
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
         return super.persist(object);
+    }
+
+    private static class ObjectPrivilegedAction implements PrivilegedAction<Object> {
+        private final Field id;
+
+        public ObjectPrivilegedAction(Field id) {
+            this.id = id;
+        }
+
+        @Override
+        public Object run() {
+            id.setAccessible(true);
+            return null;
+        }
     }
 }

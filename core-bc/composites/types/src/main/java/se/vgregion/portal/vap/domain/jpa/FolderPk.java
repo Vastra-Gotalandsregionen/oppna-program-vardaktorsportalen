@@ -11,6 +11,8 @@ import java.io.Serializable;
 @Embeddable
 public class FolderPk implements Serializable {
 
+    private static final long serialVersionUID = -4027424110613431374L;
+
     private Long userId;
     private String folderName;
 

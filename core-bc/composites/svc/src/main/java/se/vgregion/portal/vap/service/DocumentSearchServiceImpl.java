@@ -22,6 +22,7 @@ import se.vgregion.portal.vap.util.JsonUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.*;
 
@@ -150,12 +151,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
             // Sort according to the order of the original list
             if (result != null && result.getComponents() != null && result.getComponents().getDocuments() != null) {
-                Collections.sort(result.getComponents().getDocuments(), new Comparator<Document>() {
-                    @Override
-                    public int compare(Document o1, Document o2) {
-                        return md5Sums.indexOf(o1.getId_hash()) < md5Sums.indexOf(o2.getId_hash()) ? -1 : 1;
-                    }
-                });
+                Collections.sort(result.getComponents().getDocuments(), new DocumentComparator(md5Sums));
             }
 
             return result;
@@ -230,5 +226,20 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     private String getCompleteUrl(String query, int offset, int hits) {
         return queryUrlBase + String.format(queryStringStructure, query, offset, hits);
+    }
+
+    private static class DocumentComparator implements Comparator<Document>, Serializable {
+        private static final long serialVersionUID = 276875403019707216L;
+
+        private final List<String> md5Sums;
+
+        public DocumentComparator(List<String> md5Sums) {
+            this.md5Sums = md5Sums;
+        }
+
+        @Override
+        public int compare(Document o1, Document o2) {
+            return md5Sums.indexOf(o1.getId_hash()) < md5Sums.indexOf(o2.getId_hash()) ? -1 : 1;
+        }
     }
 }

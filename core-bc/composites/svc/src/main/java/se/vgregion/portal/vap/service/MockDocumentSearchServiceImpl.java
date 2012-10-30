@@ -150,7 +150,7 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
         List<Document> documentsToReturn = documents.subList(resultsStart, resultsEnd);
 
         SearchResult searchResult = new SearchResult();
-        searchResult.setNumberOfHits(new Long(numberOfHits));
+        searchResult.setNumberOfHits(Long.valueOf(numberOfHits));
 
         Components components = new Components();
         components.setDocuments(documentsToReturn);

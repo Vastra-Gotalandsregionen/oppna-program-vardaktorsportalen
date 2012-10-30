@@ -11,6 +11,8 @@ import java.io.Serializable;
 @Embeddable
 public class FlagPk implements Serializable {
 
+    private static final long serialVersionUID = -2761745128149288419L;
+
     private Long userId;
     private String documentId;
 
