@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
+  id="oppna-program-vap-core-bc-module-portlet">
+
+  <portlet>
+    <portlet-name>search</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+	<init-param>
+		<name>check-auth-token</name>
+		<value>false</value>
+	</init-param>    
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Sök</title>
+      <short-title>Sök</short-title>
+      <keywords>search</keywords>
+    </portlet-info>
+
+    <supported-publishing-event>
+      <qname xmlns:x="http://liferay.com/events">x:vap.searchResultJson</qname>
+    </supported-publishing-event>
+
+	<supported-public-render-parameter>searchTerm</supported-public-render-parameter>
+    <supported-public-render-parameter>searchQuery</supported-public-render-parameter>
+    <supported-public-render-parameter>isPaginatorCall</supported-public-render-parameter>
+  </portlet>
+
+  <portlet>
+    <portlet-name>search-startpage</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Sök Startsida</title>
+      <short-title>Sök Startsida</short-title>
+      <keywords>search-startpage</keywords>
+    </portlet-info>
+
+    <portlet-preferences>
+      <preference>
+        <name>searchLayoutFriendlyURL</name>
+        <value>/sok</value>
+      </preference>
+    </portlet-preferences>
+
+    <supported-publishing-event>
+      <qname xmlns:x="http://liferay.com/events">x:vap.searchResultJson</qname>
+    </supported-publishing-event>
+
+    <supported-public-render-parameter>searchQuery</supported-public-render-parameter>
+    <supported-public-render-parameter>isPaginatorCall</supported-public-render-parameter>
+  </portlet>
+
+  <portlet>
+    <portlet-name>search-result</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Sökresultat</title>
+      <short-title>Sökresultat</short-title>
+      <keywords>search-result</keywords>
+    </portlet-info>
+
+    <portlet-preferences>
+      <preference>
+        <name>viewDocumentFriendlyURL</name>
+        <value>/viewDocument</value>
+      </preference>
+      <preference>
+        <name>viewDocumentPortletName</name>
+        <value>viewdocument_WAR_vapportlet</value>
+      </preference>
+    </portlet-preferences>
+
+    <supported-processing-event>
+      <qname xmlns:x="http://liferay.com/events">x:vap.searchResultJson</qname>
+    </supported-processing-event>
+
+	<supported-public-render-parameter>searchTerm</supported-public-render-parameter>
+    <supported-public-render-parameter>searchQuery</supported-public-render-parameter>
+    <supported-public-render-parameter>isPaginatorCall</supported-public-render-parameter>
+  </portlet>
+
+  <portlet>
+    <portlet-name>bookmarks</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Mina Bokmärken</title>
+      <short-title>Bokmärken</short-title>
+      <keywords>bookmarks</keywords>
+    </portlet-info>
+
+  </portlet>
+
+  <portlet>
+    <portlet-name>facet-search</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Facettsökning</title>
+      <short-title>Facettsökning</short-title>
+      <keywords>facet-search</keywords>
+    </portlet-info>
+
+    <supported-processing-event>
+      <qname xmlns:x="http://liferay.com/events">x:vap.searchResultJson</qname>
+    </supported-processing-event>
+
+    <supported-publishing-event>
+      <qname xmlns:x="http://liferay.com/events">x:vap.searchResultJson</qname>
+    </supported-publishing-event>
+
+	<supported-public-render-parameter>searchTerm</supported-public-render-parameter>
+    <supported-public-render-parameter>searchQuery</supported-public-render-parameter>
+    
+  </portlet>
+
+  <portlet>
+    <portlet-name>latest-documents</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Senaste dokument</title>
+      <short-title>Senaste dokument</short-title>
+      <keywords>latest-documents</keywords>
+    </portlet-info>
+
+    <portlet-preferences>
+      <preference>
+        <name>viewDocumentFriendlyURL</name>
+        <value>/viewDocument</value>
+      </preference>
+      <preference>
+        <name>viewDocumentPortletName</name>
+        <value>viewdocument_WAR_vapportlet</value>
+      </preference>
+    </portlet-preferences>
+  </portlet>
+
+  <portlet>
+    <portlet-name>view-document</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Visa dokument</title>
+      <short-title>Visa dokument</short-title>
+      <keywords>view-document</keywords>
+    </portlet-info>
+  </portlet>
+  
+  <portlet>
+    <portlet-name>project-navigation</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Projekt Navigation</title>
+      <short-title>Projekt Navigation</short-title>
+      <keywords>Projekt Navigation</keywords>
+    </portlet-info>
+
+	<supported-public-render-parameter>projectArticleUrlTitle</supported-public-render-parameter>
+
+  </portlet>
+
+  <portlet>
+    <portlet-name>project-display</portlet-name>
+    <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+    </supports>
+    <supported-locale>sv</supported-locale>
+
+    <portlet-info>
+      <title>Visa Projekt</title>
+      <short-title>Visa Projekt</short-title>
+      <keywords>Visa Projekt</keywords>
+    </portlet-info>
+
+	<supported-public-render-parameter>projectArticleUrlTitle</supported-public-render-parameter>
+  </portlet>
+  
+
+  <event-definition>
+    <qname xmlns:x="http://liferay.com/events">x:vap.searchResultJson</qname>
+    <value-type>java.lang.String</value-type>
+  </event-definition>
+
+  <public-render-parameter>
+    <identifier>searchQuery</identifier>
+    <qname>searchQuery</qname>
+  </public-render-parameter>
+
+  <public-render-parameter>
+    <identifier>searchTerm</identifier>
+    <qname>searchTerm</qname>
+  </public-render-parameter>
+
+  <public-render-parameter>
+    <identifier>isPaginatorCall</identifier>
+    <qname>isPaginatorCall</qname>
+  </public-render-parameter>
+  
+  <public-render-parameter>
+    <identifier>projectArticleUrlTitle</identifier>
+    <qname>projectArticleUrlTitle</qname>
+  </public-render-parameter>
+
+
+</portlet-app>
