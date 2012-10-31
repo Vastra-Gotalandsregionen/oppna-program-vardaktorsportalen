@@ -26,8 +26,10 @@
   <!-- Open Source repo -->
   <scm>
     <connection>scm:svn://oppna-program-vardaktorsportalen.googlecode.com/svn/trunk</connection>
+      <!--
     <developerConnection>scm:svn:https://oppna-program-vardaktorsportalen.googlecode.com/svn/tags/oppna-program-vardaktorsportalen-system-1.0</developerConnection>
     <url>http://oppna-program-vardaktorsportalen.googlecode.com/svn/tags/oppna-program-vardaktorsportalen-system-1.0</url>
+    -->
   </scm>
 
   <properties>
