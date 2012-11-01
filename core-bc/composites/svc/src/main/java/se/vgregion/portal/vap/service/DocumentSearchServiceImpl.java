@@ -209,9 +209,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         // Set params
         final HttpParams params = httpClient.getParams();
-        final int twoThousand = 2000;
-        HttpConnectionParams.setConnectionTimeout(params, twoThousand);
-        HttpConnectionParams.setSoTimeout(params, twoThousand);
+        final int fourThousand = 4000;
+        HttpConnectionParams.setConnectionTimeout(params, fourThousand);
+        HttpConnectionParams.setSoTimeout(params, fourThousand);
 
         HttpResponse response = httpClient.execute(httpGet);
 
