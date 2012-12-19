@@ -11,6 +11,7 @@
 <%@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <portlet:defineObjects />
+<liferay-theme:defineObjects />	
 
 <div id="<portlet:namespace />resultsWrap" class="vap-results-wrap">
 	<c:choose>
@@ -52,17 +53,20 @@
 												<c:out value="${document.title}" escapeXml="false"/>
 											</a>
 										</h3>
-
-										<liferay-portlet:resourceURL id="toggleFlag" copyCurrentRenderParameters="false" var="toggleFlagURL">
-											<portlet:param name="documentId" value="${document.id_hash}"/>
-										</liferay-portlet:resourceURL>
 										
-										<c:set var="flagCssClass" scope="page" value="vap-flag" />
-										<c:if test="${not empty flags[document.id_hash]}">
-											<c:set var="flagCssClass" scope="page" value="${flagCssClass} vap-flag-active" />
+										<c:if test="${isLoggedIn}">
+											<liferay-portlet:resourceURL id="toggleFlag" copyCurrentRenderParameters="false" var="toggleFlagURL">
+												<portlet:param name="documentId" value="${document.id_hash}"/>
+											</liferay-portlet:resourceURL>
+											
+											<c:set var="flagCssClass" scope="page" value="vap-flag" />
+											<c:if test="${not empty flags[document.id_hash]}">
+												<c:set var="flagCssClass" scope="page" value="${flagCssClass} vap-flag-active" />
+											</c:if>
+	
+											<a class="${flagCssClass}" href="${toggleFlagURL}" title="Bokm&auml;rke">Bokm&auml;rke</a>
 										</c:if>
 
-										<a class="${flagCssClass}" href="${toggleFlagURL}" title="Bokm&auml;rke">Bokm&auml;rke</a>
 									</div>
 									<div class="bd description">
 										<c:out value="${document.description}" escapeXml="false"/>
