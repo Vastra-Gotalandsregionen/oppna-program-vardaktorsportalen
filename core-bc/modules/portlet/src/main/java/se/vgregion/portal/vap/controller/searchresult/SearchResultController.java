@@ -66,6 +66,9 @@ public class SearchResultController extends BaseController {
      */
     @RenderMapping()
     public String showSearchResult(RenderRequest request, RenderResponse response) {
+    	User user = getUser(request);
+    	request.setAttribute("isLoggedIn", isLoggedIn(user));
+    	
         return "search-result";
     }
 
@@ -87,6 +90,8 @@ public class SearchResultController extends BaseController {
             populateRequestWithBookmarks(request, user);
             populateRequestWithFlags(request, user);
         }
+        
+        request.setAttribute("isLoggedIn", isLoggedIn(user));
 
         String searchQuery = request.getParameter("searchQuery");
         if (searchQuery == null) {
