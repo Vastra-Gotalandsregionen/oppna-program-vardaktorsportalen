@@ -11,6 +11,7 @@
                 <portlet id="view-document" />
                 <portlet id="project-navigation" />
                 <portlet id="project-display" />
+                <portlet id="user-flags" />
         </category>
 </display>
 

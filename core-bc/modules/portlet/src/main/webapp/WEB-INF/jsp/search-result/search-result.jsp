@@ -44,13 +44,25 @@
 			                  	       <portlet:param name="action" value="interceptDocumentSourceClick"/>
 			                           <portlet:param name="targetUrl" value="${document.url}"/>
 			                           <portlet:param name="documentId" value="${document.id_hash}"/>
-			                         </portlet:actionURL>					
+			                         </portlet:actionURL>
+			                         
 			                        <div class="hd clearfix">
 			                            <h3 class="title">
 			                                <a href="${documentUrl}" target="_BLANK">
 												<c:out value="${document.title}" escapeXml="false"/>
 											</a>
 										</h3>
+
+										<liferay-portlet:resourceURL id="toggleFlag" copyCurrentRenderParameters="false" var="toggleFlagURL">
+											<portlet:param name="documentId" value="${document.id_hash}"/>
+										</liferay-portlet:resourceURL>
+										
+										<c:set var="flagCssClass" scope="page" value="vap-flag" />
+										<c:if test="${not empty flags[document.id_hash]}">
+											<c:set var="flagCssClass" scope="page" value="${flagCssClass} vap-flag-active" />
+										</c:if>
+
+										<a class="${flagCssClass}" href="${toggleFlagURL}" title="Bokm&auml;rke">Bokm&auml;rke</a>
 									</div>
 									<div class="bd description">
 										<c:out value="${document.description}" escapeXml="false"/>

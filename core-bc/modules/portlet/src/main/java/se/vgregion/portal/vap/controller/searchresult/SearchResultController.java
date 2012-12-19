@@ -13,6 +13,7 @@ import org.springframework.web.portlet.bind.annotation.ResourceMapping;
 import se.vgregion.portal.vap.controller.BaseController;
 import se.vgregion.portal.vap.domain.searchresult.SearchResult;
 import se.vgregion.portal.vap.domain.jpa.Bookmark;
+import se.vgregion.portal.vap.domain.jpa.Flag;
 import se.vgregion.portal.vap.service.*;
 import se.vgregion.portal.vap.util.JsonUtil;
 
@@ -84,6 +85,7 @@ public class SearchResultController extends BaseController {
 
         if (isLoggedIn(user)) {
             populateRequestWithBookmarks(request, user);
+            populateRequestWithFlags(request, user);
         }
 
         String searchQuery = request.getParameter("searchQuery");
@@ -147,6 +149,7 @@ public class SearchResultController extends BaseController {
 
         if (isLoggedIn(user)) {
             populateRequestWithBookmarks(request, user);
+            populateRequestWithFlags(request, user);
         }
 
         String searchResultJson = request.getParameter("searchResultJson");
@@ -213,7 +216,7 @@ public class SearchResultController extends BaseController {
 
         String documentId = request.getParameter("documentId");
         String folderName = request.getParameter("folderName");
-
+        
         getBookmarkService().addBookmark(user.getUserId(), documentId, folderName);
     }
 
@@ -227,7 +230,7 @@ public class SearchResultController extends BaseController {
         User user = getUser(request);
 
         String documentId = request.getParameter("documentId");
-
+        
         getFlagService().toggleFlag(user.getUserId(), documentId);
     }
 
@@ -247,6 +250,16 @@ public class SearchResultController extends BaseController {
         }
         request.setAttribute("bookmarks", documentIdBookmark);
     }
+    
+    private void populateRequestWithFlags(PortletRequest request, User user) {
+        // todo the flags may be better to load by a common portlet and set via public render parameter json
+        // serialized
+    	
+    	Map<String, Flag> flags = getFlagService().findUserFlagsMap(user.getUserId());
+    	
+        request.setAttribute("flags", flags);
+    }
+    
 
     private static class SizeOffsetAndPageComponentOffset {
         private PortletRequest request;

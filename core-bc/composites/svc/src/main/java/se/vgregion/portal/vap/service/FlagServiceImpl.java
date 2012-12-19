@@ -5,9 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.vgregion.portal.vap.domain.jpa.Flag;
 import se.vgregion.portal.vap.domain.jpa.FlagPk;
+import se.vgregion.portal.vap.domain.searchresult.Document;
+import se.vgregion.portal.vap.domain.searchresult.SearchResult;
 import se.vgregion.portal.vap.service.repository.FlagRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,16 +23,19 @@ import java.util.Map;
 @Service
 public class FlagServiceImpl implements FlagService {
 
+	private DocumentSearchService documentSearchService;
     private FlagRepository flagRepository;
 
     /**
      * Constructor.
      *
      * @param flagRepository the {@link FlagRepository}
+     * @param documentSearchService the {@link DocumentSearchService}
      */
     @Autowired
-    public FlagServiceImpl(FlagRepository flagRepository) {
+    public FlagServiceImpl(FlagRepository flagRepository, DocumentSearchService documentSearchService) {
         this.flagRepository = flagRepository;
+        this.documentSearchService = documentSearchService;
     }
 
     @Override
@@ -68,7 +76,50 @@ public class FlagServiceImpl implements FlagService {
     }
 
     @Override
-    public Map<String, Flag> findUserFlags(Long userId) {
+    public List<Flag> findUserFlags(Long userId) {
         return flagRepository.findUserFlags(userId);
+    }
+    
+    @Override
+    public List<Document> findUserFlagDocuments(Long userId) throws DocumentSearchServiceException {
+        List<Flag> flags = flagRepository.findUserFlags(userId);
+        
+        List<String> flaggedDocumentIds = findUserFlagDocumentIds(userId);
+        
+        SearchResult search = documentSearchService.search(flaggedDocumentIds);
+        
+        List<Document> documents = search.getComponents().getDocuments();
+        
+        return documents;
+    }
+    
+    
+    @Override
+    public List<String> findUserFlagDocumentIds(Long userId) {
+        List<Flag> flags = flagRepository.findUserFlags(userId);
+        
+        ArrayList<String> flagIds = new ArrayList<String>();
+        
+        for(Flag flag : flags) {
+        	flagIds.add(flag.getId().getDocumentId());
+        }
+        
+        return flagIds;
+    }
+    
+    
+    @Override
+    public Map<String, Flag> findUserFlagsMap(Long userId) {
+    	List<Flag> userFlags = flagRepository.findUserFlags(userId);
+    	
+        Map<String, Flag> flagsMap = new HashMap<String, Flag>();
+        for (Flag flag : userFlags) {
+        	
+        	String documentId = flag.getId().getDocumentId();
+        	
+        	flagsMap.put(documentId, flag);
+        }
+    	
+        return flagsMap;
     }
 }
