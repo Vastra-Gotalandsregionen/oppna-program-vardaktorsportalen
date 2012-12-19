@@ -2,8 +2,10 @@ package se.vgregion.portal.vap.service;
 
 import se.vgregion.portal.vap.domain.jpa.Flag;
 import se.vgregion.portal.vap.domain.jpa.FlagPk;
+import se.vgregion.portal.vap.domain.searchresult.Document;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -50,12 +52,39 @@ public interface FlagService {
      * @param documentId the documentId
      */
     void toggleFlag(Long userId, String documentId);
+    
+    /**
+     * Find all {@link Document}s that are flagged  for a given user.
+     *
+     * @param userId the userId
+     * @return a {@link List} with {@link Document}s.
+     */
+    List<Document> findUserFlagDocuments(Long userId) throws DocumentSearchServiceException;
+    
+    
+    /**
+     * Find all {@link Flag}s  for a given user.
+     *
+     * @param userId the userId
+     * @return a {@link List} with {@link String}s of documentIds.
+     */
+    List<String> findUserFlagDocumentIds(Long userId);
+    
 
+    /**
+     * Find all {@link Flag}s for a given user.
+     *
+     * @param userId the userId
+     * @return a {@link List} with {@link Flag}s.
+     */
+    List<Flag> findUserFlags(Long userId);
+    
     /**
      * Find all {@link Flag}s for a given user.
      *
      * @param userId the userId
      * @return a {@link Map} where documentIds are mapped to {@link Flag}s.
      */
-    Map<String, Flag> findUserFlags(Long userId);
+    Map<String, Flag> findUserFlagsMap(Long userId);
+    
 }

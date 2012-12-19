@@ -30,6 +30,12 @@
     <instanceable>false</instanceable>
     <css-class-wrapper>vap-bookmarks-portlet</css-class-wrapper>
   </portlet>
+  
+  <portlet>
+    <portlet-name>user-flags</portlet-name>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-flags-portlet</css-class-wrapper>
+  </portlet>
 
   <portlet>
     <portlet-name>facet-search</portlet-name>

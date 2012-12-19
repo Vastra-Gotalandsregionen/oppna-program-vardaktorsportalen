@@ -5,6 +5,7 @@ import se.vgregion.dao.domain.patterns.repository.inmemory.InMemoryRepository;
 import se.vgregion.portal.vap.domain.jpa.Flag;
 import se.vgregion.portal.vap.domain.jpa.FlagPk;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Map;
 public class InMemoryFlagRepositoryImpl extends InMemoryRepository<Flag, FlagPk> implements InMemoryFlagRepository {
 
     @Override
-    public Map<String, Flag> findUserFlags(Long userId) {
+    public List<Flag> findUserFlags(Long userId) {
         throw new UnsupportedOperationException();
     }
 }

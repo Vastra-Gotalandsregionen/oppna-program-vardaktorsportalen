@@ -6,15 +6,16 @@
 
   <context:annotation-config />
 
-  <bean id="flagRepository" class="se.vgregion.portal.vap.service.repository.test.InMemoryFlagRepositoryImpl"/>
-  <bean id="folderRepository" class="se.vgregion.portal.vap.service.repository.test.InMemoryFolderRepositoryImpl"/>
-
-  <bean class="se.vgregion.portal.vap.service.FlagServiceImpl">
-    <constructor-arg ref="flagRepository"/>
-  </bean>
-  <bean class="se.vgregion.portal.vap.service.FolderServiceImpl">
-    <constructor-arg ref="folderRepository"/>
-  </bean>
+	<bean id="flagRepository" class="se.vgregion.portal.vap.service.repository.test.InMemoryFlagRepositoryImpl"/>
+	<bean id="folderRepository" class="se.vgregion.portal.vap.service.repository.test.InMemoryFolderRepositoryImpl"/>
+  	<bean class="se.vgregion.portal.vap.service.MockDocumentSearchServiceImpl" />
+  
+	<bean class="se.vgregion.portal.vap.service.FlagServiceImpl">
+		<constructor-arg ref="flagRepository"/>
+	</bean>
+	<bean class="se.vgregion.portal.vap.service.FolderServiceImpl">
+		<constructor-arg ref="folderRepository"/>
+	</bean>
 </beans>
 
 

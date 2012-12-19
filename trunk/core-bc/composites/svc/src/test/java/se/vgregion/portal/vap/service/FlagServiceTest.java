@@ -13,6 +13,7 @@ import se.vgregion.portal.vap.service.repository.FlagRepository;
 
 import javax.persistence.PersistenceException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -40,7 +41,7 @@ public class FlagServiceTest extends AbstractTransactionalJUnit4SpringContextTes
     }
 
     @Test
-    public void testFindUserFlags() {
+    public void testFindUserFlagsMap() {
         FlagPk id1 = new FlagPk(12345L, "d1");
         Flag flag1 = new Flag(id1);
         flagService.persist(flag1);
@@ -49,12 +50,9 @@ public class FlagServiceTest extends AbstractTransactionalJUnit4SpringContextTes
         Flag flag2 = new Flag(id2);
         flagService.persist(flag2);
 
-        Map<String,Flag> userFlags = flagService.findUserFlags(12345L);
+        List<Flag> userFlags = flagService.findUserFlags(12345L);
 
-        assertTrue(userFlags.containsKey("d1"));
-        assertTrue(userFlags.containsKey("d2"));
-        assertEquals(flag1, userFlags.get("d1"));
-        assertEquals(flag2, userFlags.get("d2"));
+        assertEquals(2, userFlags.size());
     }
 
     @Test

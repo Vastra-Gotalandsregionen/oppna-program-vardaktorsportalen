@@ -17,6 +17,8 @@ AUI().add('vap-search-results',function(A) {
         RESULTS_WRAP = 'resultsWrap',
         
         CSS_HIDDEN = 'aui-helper-hidden',
+        CSS_FLAG = 'vap-flag',
+        CSS_FLAG_ACTIVE = 'vap-flag-active',
         CSS_SEARCH_RESULTS_ITEM = 'vap-search-result-item',
         CSS_SEARCH_RESULTS_ITEM_HOVER = 'vap-search-result-item-hover'
     ;
@@ -41,9 +43,6 @@ AUI().add('vap-search-results',function(A) {
                     
                     renderUI: function() {
                         var instance = this;
-                        
-                        // Init console for debugging
-                        //instance._initConsole();
                     },
     
                     bindUI: function() {
@@ -54,18 +53,31 @@ AUI().add('vap-search-results',function(A) {
                         if(!isNull(resultsWrap)) {
                         	resultsWrap.delegate('mouseenter', instance._onMouseEnterResultsItem, '.' + CSS_SEARCH_RESULTS_ITEM, instance);
                         	resultsWrap.delegate('mouseleave', instance._onMouseLeaveResultsItem, '.' + CSS_SEARCH_RESULTS_ITEM, instance);
+                        	
+                        	resultsWrap.all('a.' + CSS_FLAG).on('click', instance._onFlagClick, instance);
                         }
                     },
                     
-                    _initConsole: function() {
+                    _onFlagClick: function(e) {
                     	var instance = this;
                     	
-                    	var consoleSettings = {
-                    	        newestOnTop: true,
-                    	        visible: true
-                        	};
-                        	
-                        	var console =  new A.Console(consoleSettings).render();
+                    	e.halt();
+                    	
+                    	var currentTarget = e.currentTarget;
+                    	var url = currentTarget.getAttribute('href');
+                    	
+    					var flagIO = A.io.request(url, {
+    						autoLoad : false,
+    						data: {},
+    						method : 'POST'
+    					});
+    					
+    					// Attach success handler to io request
+    					flagIO.on('success', function(e) {
+    						currentTarget.toggleClass(CSS_FLAG_ACTIVE);
+    					}, instance);							
+    					
+    					flagIO.start();
                     },
                     
                     _onMouseEnterResultsItem: function(e) {
@@ -95,7 +107,7 @@ AUI().add('vap-search-results',function(A) {
     },1, {
         requires: [
             'aui-base',
-            'console'
+            'aui-io'
       ]
     }
 );
