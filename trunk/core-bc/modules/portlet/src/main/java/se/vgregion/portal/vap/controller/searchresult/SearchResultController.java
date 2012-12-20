@@ -152,10 +152,13 @@ public class SearchResultController extends BaseController {
     public String showSearchResultWithGivenSearchResult(RenderRequest request, RenderResponse response) {
         final User user = getUser(request);
 
-        if (isLoggedIn(user)) {
+        boolean loggedIn = isLoggedIn(user);
+        if (loggedIn) {
             populateRequestWithBookmarks(request, user);
             populateRequestWithFlags(request, user);
         }
+
+        request.setAttribute("isLoggedIn", loggedIn);
 
         String searchResultJson = request.getParameter("searchResultJson");
         String searchTerm = request.getParameter("searchTerm");

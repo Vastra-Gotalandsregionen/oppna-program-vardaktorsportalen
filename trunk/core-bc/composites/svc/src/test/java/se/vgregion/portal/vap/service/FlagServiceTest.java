@@ -102,6 +102,20 @@ public class FlagServiceTest extends AbstractTransactionalJUnit4SpringContextTes
 
         all = flagService.findAll();
         assertEquals(0, all.size());
+    }
 
+    @Test
+    public void testToggleFlag() {
+        FlagPk id1 = new FlagPk(1L, "d1");
+
+        flagService.toggleFlag(id1.getUserId(), id1.getDocumentId());
+
+        assertEquals(1, flagService.findUserFlags(id1.getUserId()).size());
+        flagService.toggleFlag(id1.getUserId(), id1.getDocumentId());
+        assertEquals(0, flagService.findUserFlags(id1.getUserId()).size());
+        flagService.toggleFlag(id1.getUserId(), id1.getDocumentId());
+        assertEquals(1, flagService.findUserFlags(id1.getUserId()).size());
+        flagService.toggleFlag(id1.getUserId(), id1.getDocumentId());
+        assertEquals(0, flagService.findUserFlags(id1.getUserId()).size());
     }
 }
