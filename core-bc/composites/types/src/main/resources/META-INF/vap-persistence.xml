@@ -8,5 +8,4 @@
     <class>se.vgregion.portal.vap.domain.jpa.Flag</class>
     <class>se.vgregion.portal.vap.domain.jpa.Folder</class>
   </persistence-unit>
-
 </persistence>

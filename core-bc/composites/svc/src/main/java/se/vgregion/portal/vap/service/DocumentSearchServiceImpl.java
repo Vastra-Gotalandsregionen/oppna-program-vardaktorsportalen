@@ -161,11 +161,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     }
 
     private String makeCommaSeparatedString(List<String> md5Sums) {
+    	
         StringBuilder commaSeparatedString = new StringBuilder();
         for (String md5Sum : md5Sums) {
             commaSeparatedString.append(md5Sum + ",");
         }
-        commaSeparatedString.deleteCharAt(commaSeparatedString.length() - 1);
+
+        if(commaSeparatedString.length() > 0) {
+        	commaSeparatedString.deleteCharAt(commaSeparatedString.length() - 1);	
+        }
 
         return commaSeparatedString.toString();
     }

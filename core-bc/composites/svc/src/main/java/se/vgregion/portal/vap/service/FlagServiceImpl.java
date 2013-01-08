@@ -11,6 +11,7 @@ import se.vgregion.portal.vap.service.repository.FlagRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +70,11 @@ public class FlagServiceImpl implements FlagService {
         Flag flag = flagRepository.find(flagPk);
 
         if (flag == null) {
-            flagRepository.persist(new Flag(flagPk));
+        	flag = new Flag(flagPk);
+        	
+        	flag.setCreateDate(new Date());
+        	
+            flagRepository.persist(flag);
         } else {
             flagRepository.remove(flagPk);
         }
@@ -85,6 +90,11 @@ public class FlagServiceImpl implements FlagService {
         List<Flag> flags = flagRepository.findUserFlags(userId);
         
         List<String> flaggedDocumentIds = findUserFlagDocumentIds(userId);
+        
+        // Do not perform search if there are no stored documentIds for this user
+        if(flaggedDocumentIds.size() == 0) {
+        	return new ArrayList<Document>();
+        }
         
         SearchResult search = documentSearchService.search(flaggedDocumentIds);
         

@@ -19,9 +19,9 @@ import se.vgregion.portal.vap.domain.jpa.FlagPk;
 public class JpaFlagRepositoryImpl extends DefaultJpaRepository<Flag, FlagPk> implements JpaFlagRepository {
     @Override
     public List<Flag> findUserFlags(Long userId) {
-        Query query = entityManager.createQuery("select f from Flag f where f.id.userId = :userId");
+        Query query = entityManager.createQuery("select f from Flag f where f.id.userId = :userId order by f.createDate desc");
         query.setParameter("userId", userId);
-
+        
         @SuppressWarnings("unchecked")
 		List<Flag> resultList = query.getResultList();
 
