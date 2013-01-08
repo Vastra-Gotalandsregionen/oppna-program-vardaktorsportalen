@@ -14,29 +14,29 @@
   <tx:annotation-driven />
 
   <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-    <property name="entityManagerFactory" ref="entityManagerFactory" />
+    <property name="entityManagerFactory" ref="entityManagerFactory"/>
   </bean>
 
   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-    <property name="dataSource" ref="dataSource" />
+    <property name="dataSource" ref="dataSource"/>
     <property name="persistenceXmlLocation" value="classpath:META-INF/vap-persistence.xml"></property>
-    <property name="jpaVendorAdapter" ref="jpaVendor" />
+    <property name="jpaVendorAdapter" ref="jpaVendor"/>
     <property name="jpaPropertyMap">
       <map>
-        <entry key="hibernate.format_sql" value="${hibernate.vendor.showsql}" />
+        <entry key="hibernate.format_sql" value="${hibernate.vendor.showsql}"/>
       </map>
     </property>
   </bean>
   
   <bean id="jpaVendor" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-    <property name="database" value="${hibernate.vendor.database}" />
-    <property name="databasePlatform" value="${hibernate.vendor.databaseDialect}" />
-    <property name="generateDdl" value="${hibernate.vendor.generateDdl}" />
-    <property name="showSql" value="${hibernate.vendor.showsql}" />
+    <property name="database" value="${hibernate.vendor.database}"/>
+    <property name="databasePlatform" value="${hibernate.vendor.databaseDialect}"/>
+    <property name="generateDdl" value="${hibernate.vendor.generateDdl}"/>
+    <property name="showSql" value="${hibernate.vendor.showsql}"/>
   </bean>
 
   <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-    <property name="jndiName" value="java:comp/env/jdbc/PortalDbPool" />
+    <property name="jndiName" value="java:comp/env/jdbc/PortalDbPool"/>
   </bean>
 
 </beans>

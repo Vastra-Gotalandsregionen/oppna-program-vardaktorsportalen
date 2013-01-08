@@ -5,7 +5,11 @@ import se.vgregion.dao.domain.patterns.entity.AbstractEntity;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * JPA entity class representing a flag (a user can flag a document).
@@ -20,7 +24,10 @@ public class Flag extends AbstractEntity<FlagPk> implements Serializable {
 
     @Id
     private FlagPk id;
-
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    
     /**
      * Constructor.
      */
@@ -34,7 +41,7 @@ public class Flag extends AbstractEntity<FlagPk> implements Serializable {
     public Flag(FlagPk id) {
         this.id = id;
     }
-
+    
     @Override
     public FlagPk getId() {
         return id;
@@ -43,4 +50,13 @@ public class Flag extends AbstractEntity<FlagPk> implements Serializable {
     public void setId(FlagPk id) {
         this.id = id;
     }
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
+	
 }

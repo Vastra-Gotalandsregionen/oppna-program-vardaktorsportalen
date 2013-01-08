@@ -68,6 +68,7 @@ public class UserFlagsController extends BaseController {
             List<Document> documents = null;
             try {
             	documents = flagService.findUserFlagDocuments(userId);
+            	
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);
                 request.setAttribute("errorMessage", "Det gick inte att hämta flaggade dokument på grund av tekniskt"
@@ -76,7 +77,7 @@ public class UserFlagsController extends BaseController {
 
             request.setAttribute("documents", documents);
         }
-
+        
         request.setAttribute("isLoggedIn", isLoggedIn);
     	
         return "user_flags";
