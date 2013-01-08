@@ -1,4 +1,5 @@
 /core-bc/modules/portlet/src/main/resources/rebel.xml
+/core-bc/composites/svc/src/main/resources/rebel.xml
 
 .DS_Store
 
