@@ -8,16 +8,18 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import se.vgregion.portal.vap.domain.searchresult.Document;
-import se.vgregion.portal.vap.domain.searchresult.SearchResult;
 import se.vgregion.portal.vap.domain.autosuggest.AutoSuggestSolrResult;
 import se.vgregion.portal.vap.domain.autosuggest.Suggestion;
 import se.vgregion.portal.vap.domain.autosuggest.Suggestions;
+import se.vgregion.portal.vap.domain.searchresult.Document;
+import se.vgregion.portal.vap.domain.searchresult.SearchResult;
 import se.vgregion.portal.vap.util.JsonUtil;
 
 import java.io.IOException;
@@ -25,6 +27,8 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 /**
  * Implementation of {@link DocumentSearchService}. The implementation queries a webservice on specific url:s.
@@ -40,6 +44,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     private HttpClient httpClientSearch;
     private HttpClient httpClientAutoSuggestion;
     private String queryStringStructure = "?q=%s&offset=%s&hits=%s";
+    private Executor executor = Executors.newSingleThreadExecutor();
 
     @Value("${autoSuggestUrl}")
     private String autoSuggestUrl;
@@ -207,6 +212,49 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         return toBeReturned;
     }
 
+    @Override
+    public void sendStatisticsRequest(final String encodedSearchTerm, final String jsonResult, final String sessionId,
+                                      final String screenName, final String facetSource) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Integer hits = extractHits(jsonResult);
+
+                    String pageUrl = "q=" + encodedSearchTerm
+                            + "&filter=scope:VGRegionvardaktorsportalen&scoped=true";
+                    if (facetSource != null) {
+                        pageUrl = pageUrl + "&facet_source=" + facetSource;
+                    }
+                    String pageurlEncoded = URLEncoder.encode(pageUrl, "UTF-8");
+                    String url = String.format("http://hitta.vgregion.se/statistics-service/searchevent?hits=%s" +
+                            "&user=%s&session=%s&pageurl=%s", hits, screenName, sessionId, pageurlEncoded);
+
+                    executeGetRequest(url, httpClientSearch);
+                } catch (IOException e) {
+                    LOGGER.error(e.getMessage(), e);
+                } catch (DocumentSearchServiceException e) {
+                    LOGGER.error(e.getMessage(), e);
+                } catch (RuntimeException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+            }
+        });
+    }
+
+    Integer extractHits(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode hits = mapper.reader().readTree(json).get("numberOfHits");
+            int intValue = hits.getIntValue();
+            return intValue;
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        return null;
+    }
+
     private InputStream executeGetRequest(String url, HttpClient httpClient) throws IOException,
             DocumentSearchServiceException {
         HttpGet httpGet = new HttpGet(url);
@@ -222,7 +270,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         final int statusCode = response.getStatusLine().getStatusCode();
         final int ok = 200;
         if (statusCode != ok) {
-            throw new DocumentSearchServiceException("Search failed with response code = " + statusCode);
+            throw new DocumentSearchServiceException("Request failed with response code = " + statusCode);
         }
 
         return response.getEntity().getContent();
@@ -230,6 +278,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     private String getCompleteUrl(String query, int offset, int hits) {
         return queryUrlBase + String.format(queryStringStructure, query, offset, hits);
+    }
+
+    public void setHttpClientSearch(HttpClient httpClientSearch) {
+        this.httpClientSearch = httpClientSearch;
+    }
+
+    public void setHttpClientAutoSuggestion(HttpClient httpClientAutoSuggestion) {
+        this.httpClientAutoSuggestion = httpClientAutoSuggestion;
     }
 
     private static class DocumentComparator implements Comparator<Document>, Serializable {

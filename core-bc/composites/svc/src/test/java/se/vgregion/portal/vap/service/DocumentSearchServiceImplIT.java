@@ -85,13 +85,12 @@ public class DocumentSearchServiceImplIT {
 
     @Test
     public void testSearchSingleDocument() throws DocumentSearchServiceException {
-        SearchResult searchResult = documentSearchService.search(Arrays.asList("026fec0720052869c491720555e215a8",
-                "bdef57a2506eb0de9640777b103c4d64"));
+        SearchResult searchResult = documentSearchService.search(Arrays.asList("1177_c0a8f7f32fe18eb3dbd646d12a45ccf3",
+                "1177_8d8d2162fc893aa7773dc6e5cf06674d"));
 
         List<Document> documents = searchResult.getComponents().getDocuments();
 
         assertEquals(2, documents.size());
-        assertEquals("Socialstyrelsen", documents.get(0).getAuthor());
+        assertEquals("1177", documents.get(0).getSource());
     }
-
 }

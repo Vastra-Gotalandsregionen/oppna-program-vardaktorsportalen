@@ -198,6 +198,11 @@ public class MockDocumentSearchServiceImpl implements DocumentSearchService {
         return suggestions;
     }
 
+    @Override
+    public void sendStatisticsRequest(String encodedSearchTerm, String jsonResponse, String id, String screenName, String facetSource) {
+        throw new UnsupportedOperationException();
+    }
+
     private String aroundTheWorldInEightyDays = "This is a book excerpt. IN WHICH PASSEPARTOUT IS CONVINCED THAT HE HAS"
             + " AT LAST"
             + " FOUND HIS IDEAL ‘Faith,’ muttered Passepartout, somewhat flurried, ‘I’ve seen people at Madame"

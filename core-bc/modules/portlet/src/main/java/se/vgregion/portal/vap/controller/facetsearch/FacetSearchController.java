@@ -87,9 +87,13 @@ public class FacetSearchController extends BaseController {
         if (searchQuery != null) {
             response.setRenderParameter("searchQuery", URLEncoder.encode(searchQuery, "UTF-8"));
             response.setRenderParameter("isPaginatorCall", "false");
-            request.setAttribute("searchTerm", request.getParameter("searchTerm"));
+            String searchTerm = request.getParameter("searchTerm");
+            request.setAttribute("searchTerm", searchTerm);
             try {
                 String result = getDocumentSearchService().searchJsonReply(searchQuery);
+
+                sendStatisticsRequest(request, URLEncoder.encode(searchTerm, "UTF-8"), result, null);
+
                 response.setEvent(new QName("http://liferay.com/events", "vap.searchResultJson"), result);
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);

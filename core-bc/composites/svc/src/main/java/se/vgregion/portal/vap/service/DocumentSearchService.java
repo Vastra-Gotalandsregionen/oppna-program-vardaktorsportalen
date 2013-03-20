@@ -82,4 +82,7 @@ public interface DocumentSearchService {
      * @return the result as a collection of {@link String}s
      */
     Collection<String> getAutoSuggestions(String searchTerm);
+
+    void sendStatisticsRequest(String encodedSearchTerm, String jsonResponse, String id, String screenName,
+                               String facetSource);
 }
