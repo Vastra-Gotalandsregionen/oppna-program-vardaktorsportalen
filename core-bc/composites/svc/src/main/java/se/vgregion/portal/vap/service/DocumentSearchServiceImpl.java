@@ -39,7 +39,6 @@ import java.util.concurrent.Executors;
 public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentSearchServiceImpl.class);
-
     private String queryUrlBase;
     private HttpClient httpClientSearch;
     private HttpClient httpClientAutoSuggestion;
@@ -51,6 +50,9 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
     @Value("${singleDocumentQueryUrl}")
     private String singleDocumentQueryUrl;
+
+    @Value("${statisticsUrl}")
+    private String statisticsUrl;
 
     /**
      * Constructor.
@@ -227,8 +229,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                         pageUrl = pageUrl + "&facet_source=" + facetSource;
                     }
                     String pageurlEncoded = URLEncoder.encode(pageUrl, "UTF-8");
-                    String url = String.format("http://hitta.vgregion.se/statistics-service/searchevent?hits=%s" +
-                            "&user=%s&session=%s&pageurl=%s", hits, screenName, sessionId, pageurlEncoded);
+                    String url = String.format(statisticsUrl, hits, screenName, sessionId, pageurlEncoded);
 
                     executeGetRequest(url, httpClientSearch);
                 } catch (IOException e) {
@@ -269,8 +270,11 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         final int statusCode = response.getStatusLine().getStatusCode();
         final int ok = 200;
+        final int noContent = 204;
         if (statusCode != ok) {
             throw new DocumentSearchServiceException("Request failed with response code = " + statusCode);
+        } else if (statusCode == noContent) {
+            return null;
         }
 
         return response.getEntity().getContent();
