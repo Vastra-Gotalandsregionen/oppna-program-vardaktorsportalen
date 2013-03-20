@@ -136,12 +136,16 @@ public class SearchController extends BaseController {
         } else {
             response.setRenderParameter("searchTerm", searchTerm);
 
-            String searchQuery = "q=" + URLEncoder.encode(searchTerm, "UTF-8") + "&hits=10&offset=0";
+            String encodedSearchTerm = URLEncoder.encode(searchTerm, "UTF-8");
+            String searchQuery = "q=" + encodedSearchTerm + "&hits=10&offset=0";
             response.setRenderParameter("searchQuery", URLEncoder.encode(searchQuery, "UTF-8"));
 
             response.setRenderParameter("isPaginatorCall", "false");
             try {
                 String result = getDocumentSearchService().searchJsonReply(searchQuery);
+
+                sendStatisticsRequest(request, encodedSearchTerm, result, null);
+
                 response.setEvent(new QName("http://liferay.com/events", "vap.searchResultJson"), result);
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);

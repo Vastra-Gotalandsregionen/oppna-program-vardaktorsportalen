@@ -31,6 +31,12 @@ public abstract class BaseController {
         }
     }
 
+    protected void sendStatisticsRequest(PortletRequest request, String encodedSearchTerm, String jsonResult,
+                                         String facetSource) {
+        getDocumentSearchService().sendStatisticsRequest(encodedSearchTerm, jsonResult,
+                request.getPortletSession().getId(), getUser(request).getScreenName(), facetSource);
+    }
+
     protected boolean isLoggedIn(User user) {
         return user != null && !user.isDefaultUser();
     }
