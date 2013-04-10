@@ -100,7 +100,7 @@
     <supported-public-render-parameter>isPaginatorCall</supported-public-render-parameter>
   </portlet>
 
-  <portlet>
+  <!--<portlet>
     <portlet-name>bookmarks</portlet-name>
     <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
     <expiration-cache>0</expiration-cache>
@@ -116,8 +116,10 @@
       <keywords>bookmarks</keywords>
     </portlet-info>
 
-  </portlet>
-  
+  </portlet>-->
+
+  <!-- The user flags portlet uses the word "flag" everywhere except for in the gui, since the product owner wanted
+   to change "flagga" to "bokmärke". -->
   <portlet>
     <portlet-name>user-flags</portlet-name>
     <portlet-class>org.springframework.web.portlet.DispatcherPortlet</portlet-class>
@@ -129,9 +131,9 @@
     <supported-locale>sv</supported-locale>
 
     <portlet-info>
-      <title>Mina Flaggor</title>
-      <short-title>Flaggor</short-title>
-      <keywords>flaggor</keywords>
+      <title>Mina Bokmärken</title>
+      <short-title>Bokmärken</short-title>
+      <keywords>bokmärken</keywords>
     </portlet-info>
 
   </portlet>

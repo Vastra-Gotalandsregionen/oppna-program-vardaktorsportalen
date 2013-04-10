@@ -130,7 +130,6 @@ public class SearchController extends BaseController {
                 LOGGER.error(e.getMessage(), e);
             } catch (WindowStateException e) {
                 LOGGER.error(e.getMessage(), e);
-
             }
             return;
         } else {

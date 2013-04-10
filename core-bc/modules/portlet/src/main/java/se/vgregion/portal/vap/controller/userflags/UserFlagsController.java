@@ -71,8 +71,7 @@ public class UserFlagsController extends BaseController {
             	
             } catch (DocumentSearchServiceException e) {
                 LOGGER.error(e.getMessage(), e);
-                request.setAttribute("errorMessage", "Det gick inte att hämta flaggade dokument på grund av tekniskt"
-                        + " fel.");
+                request.setAttribute("errorMessage", "Det gick inte att hämta dokument på grund av tekniskt fel.");
             }
 
             request.setAttribute("documents", documents);
@@ -115,7 +114,4 @@ public class UserFlagsController extends BaseController {
         String targetUrl = request.getParameter("targetUrl");
         response.sendRedirect(targetUrl);
     }
-    
-    
-
 }
