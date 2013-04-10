@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.0.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_0_0.dtd">
+
+<liferay-portlet-app>
+  <portlet>
+    <portlet-name>search</portlet-name>
+	<friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+    <friendly-url-mapping>q</friendly-url-mapping>
+    <friendly-url-routes>vap-search-friendly-url-routes.xml</friendly-url-routes>
+    <action-url-redirect>true</action-url-redirect>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-search-portlet</css-class-wrapper>
+  </portlet>
+
+  <portlet>
+    <portlet-name>search-startpage</portlet-name>
+    <action-url-redirect>true</action-url-redirect>
+	<instanceable>false</instanceable>
+    <css-class-wrapper>vap-search-portlet</css-class-wrapper>
+  </portlet>
+
+  <portlet>
+    <portlet-name>search-result</portlet-name>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-search-result-portlet</css-class-wrapper>
+  </portlet>
+
+  <!--<portlet>
+    <portlet-name>bookmarks</portlet-name>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-bookmarks-portlet</css-class-wrapper>
+  </portlet>-->
+  
+  <portlet>
+    <portlet-name>user-flags</portlet-name>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-flags-portlet</css-class-wrapper>
+  </portlet>
+
+  <portlet>
+    <portlet-name>facet-search</portlet-name>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-facet-search-portlet</css-class-wrapper>
+  </portlet>
+
+  <portlet>
+    <portlet-name>latest-documents</portlet-name>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-latest-documents-portlet</css-class-wrapper>
+  </portlet>
+
+  <portlet>
+    <portlet-name>view-document</portlet-name>
+    <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+    <friendly-url-mapping>document</friendly-url-mapping>
+    <friendly-url-routes>vap-view-document-friendly-url-routes.xml</friendly-url-routes>
+    <action-url-redirect>true</action-url-redirect>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-search-portlet</css-class-wrapper>
+  </portlet>
+  
+  <portlet>
+    <portlet-name>project-navigation</portlet-name>
+    <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+    <friendly-url-mapping>p</friendly-url-mapping>
+    <friendly-url-routes>vap-project-navigation-friendly-url-routes.xml</friendly-url-routes>
+    <action-url-redirect>true</action-url-redirect>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-project-navigation</css-class-wrapper>
+  </portlet>
+  
+  <portlet>
+    <portlet-name>project-display</portlet-name>
+    <action-url-redirect>true</action-url-redirect>
+    <instanceable>false</instanceable>
+    <css-class-wrapper>vap-project-display</css-class-wrapper>
+  </portlet>
+
+  <role-mapper>
+    <role-name>administrator</role-name>
+    <role-link>Administrator</role-link>
+  </role-mapper>
+  <role-mapper>
+    <role-name>guest</role-name>
+    <role-link>Guest</role-link>
+  </role-mapper>
+  <role-mapper>
+    <role-name>power-user</role-name>
+    <role-link>Power User</role-link>
+  </role-mapper>
+  <role-mapper>
+    <role-name>user</role-name>
+    <role-link>User</role-link>
+  </role-mapper>
+
+</liferay-portlet-app>
+
