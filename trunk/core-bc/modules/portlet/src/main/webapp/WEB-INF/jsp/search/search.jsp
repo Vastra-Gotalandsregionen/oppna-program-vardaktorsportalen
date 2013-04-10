@@ -12,7 +12,6 @@
 
 <portlet:defineObjects />
 
-
 <portlet:actionURL var="searchUrl">
     <portlet:param name="action" value="search"/>
 </portlet:actionURL>

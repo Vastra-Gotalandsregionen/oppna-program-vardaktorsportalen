@@ -45,7 +45,7 @@ public class DocumentSearchServiceImplIT {
 
     @Test
     public void testSearchJsonString() throws DocumentSearchServiceException, IOException {
-        String result = documentSearchService.searchJsonReply("hits=10&offset=0&q=sjukdom+f%C3%B6rkylning");
+        String result = documentSearchService.searchJsonReply("hits=50&offset=0&q=hiv+postexpositionsprofylax");
 
         System.out.println(result);
 

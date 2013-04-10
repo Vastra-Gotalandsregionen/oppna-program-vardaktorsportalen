@@ -10,7 +10,7 @@
 <c:if test="${isLoggedIn}">
 	<div class="vgr-boxed-content vap-flags">
 		<div class="hd">
-			<span>Mina flaggor</span>
+			<span>Mina bokmärken</span>
 		</div>
 		<div class="bd">
 		    <c:if test="${not empty errorMessage}">
@@ -53,7 +53,7 @@
 											<portlet:param name="documentId" value="${document.id_hash}"/>
 										</portlet:actionURL>			            
 						                
-						                <a class="vap-flag-remove" href="${removeUserFlagUrl}">Ta bort flagga</a>
+						                <a class="vap-flag-remove" href="${removeUserFlagUrl}">Ta bort bokmärke</a>
 						            </div>
 						            <div class="bd description">
 						            </div>
@@ -72,7 +72,7 @@
 						</ul>			    	
 			    	</c:when>
 			    	<c:otherwise>
-			    		<p>Du har inte lagt till n&aring;gra flaggor &auml;nnu.</p>
+			    		<p>Du har inte lagt till n&aring;gra bokm&auml;rken &auml;nnu.</p>
 			    	</c:otherwise>
 		    	</c:choose>
 

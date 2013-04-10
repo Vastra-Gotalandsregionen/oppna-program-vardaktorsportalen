@@ -25,11 +25,11 @@
     <css-class-wrapper>vap-search-result-portlet</css-class-wrapper>
   </portlet>
 
-  <portlet>
+  <!--<portlet>
     <portlet-name>bookmarks</portlet-name>
     <instanceable>false</instanceable>
     <css-class-wrapper>vap-bookmarks-portlet</css-class-wrapper>
-  </portlet>
+  </portlet>-->
   
   <portlet>
     <portlet-name>user-flags</portlet-name>
