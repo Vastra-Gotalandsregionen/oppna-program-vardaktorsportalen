@@ -270,14 +270,15 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
         final int statusCode = response.getStatusLine().getStatusCode();
         final int ok = 200;
-        final int noContent = 204;
-        if (statusCode != ok) {
-            throw new DocumentSearchServiceException("Request failed with response code = " + statusCode);
-        } else if (statusCode == noContent) {
-            return null;
-        }
+        final int okNoContent = 204;
 
-        return response.getEntity().getContent();
+        if (statusCode == okNoContent) {
+            return null;
+        } else if (statusCode == ok) {
+            return response.getEntity().getContent();
+        } else {
+            throw new DocumentSearchServiceException("Request failed with response code = " + statusCode);
+        }
     }
 
     private String getCompleteUrl(String query, int offset, int hits) {
