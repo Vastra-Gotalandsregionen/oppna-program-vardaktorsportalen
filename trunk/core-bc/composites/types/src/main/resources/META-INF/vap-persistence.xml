@@ -7,5 +7,6 @@
     <class>se.vgregion.portal.vap.domain.jpa.Bookmark</class>
     <class>se.vgregion.portal.vap.domain.jpa.Flag</class>
     <class>se.vgregion.portal.vap.domain.jpa.Folder</class>
+    <class>se.vgregion.portal.vap.domain.jpa.UserEvents</class>
   </persistence-unit>
 </persistence>

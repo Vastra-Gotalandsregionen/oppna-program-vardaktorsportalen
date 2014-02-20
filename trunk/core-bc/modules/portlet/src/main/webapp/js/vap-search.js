@@ -86,22 +86,24 @@ AUI().add('vap-search',function(A) {
                             }
                         });
                         
-                        var acContentBox = instance.get(AC_CONTENT_BOX);
                         var acInput = instance.get(AC_INPUT);
                         
-                        instance.autoComplete = new A.AutoComplete({
-                            autoHighlight: false,
-                            button: false,
-	                        contentBox: instance.get(AC_CONTENT_BOX),
+                        instance.autoComplete = new A.AutoCompleteList({
 	                        cssClass: 'vap-autocomplete',
-	                        dataSource: myDataSource,
-	                        delimChar: false,
-	                        forceSelection: false,
-	                        input: instance.get(AC_INPUT),
-	                        matchKey: 'suggestion',
+	                        source: myDataSource,
+	                        inputNode: acInput,
 	                        minQueryLength: 2,
-	                        queryDelay: 0.2,
-	                        typeAhead: false
+                            queryDelay: 0.2,
+                            resultFilters: [function (query, result) {
+                                var items = JSON.parse(result[0].raw.response)['result'];
+                                var array = [];
+
+                                items.forEach(function(entry) {
+                                    array.push({'display':entry['suggestion'], 'text':entry['suggestion']});
+                                });
+
+                                return array;
+                            }]
                         });
 
                         instance.autoComplete.render();            
@@ -130,9 +132,10 @@ AUI().add('vap-search',function(A) {
         
     },1, {
         requires: [
-	       'aui-autocomplete',
-	       'aui-base',
-	       'aui-io',
+	       'autocomplete',
+           'autocomplete-sources',
+           'aui-base',
+	       'datasource-io',
 	       'json',
 	       'console'
       ]
